@@ -5,7 +5,7 @@
     <button class="topbar-action" bindtap="refresh">刷新</button>
   </view>
 
-  <scroll-view class="message-list" scroll-y enable-back-to-top scroll-with-animation scroll-into-view="{{scrollToId}}">
+  <scroll-view class="message-list" scroll-y enable-back-to-top scroll-into-view="{{scrollToId}}">
     <view wx:if="{{loading}}" class="empty">正在加载我们的悄悄话…</view>
     <view wx:elif="{{!messages.length}}" class="empty">还没有留言。\n先写下第一句悄悄话吧 💌</view>
     <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}" class="message-row {{item.mine ? 'mine' : ''}}">

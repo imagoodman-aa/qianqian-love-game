@@ -25,6 +25,7 @@ Page({
     status: '键盘“发送”键即可留言 · 支持上传图片', displayName: '', scrollToId: ''
   },
   pollTimer: null,
+  messageSignature: '',
 
   onLoad() {
     const app = getApp();
@@ -46,11 +47,17 @@ Page({
       const data = await callLoveApi('list', { markRead: Boolean(markRead) });
       const messages = (data.messages || []).map(message => ({ ...message, displayTime: formatTime(message.createdAt) }));
       const newest = messages[messages.length - 1];
+      const signature = messages.map(message => [message.id, message.type, message.content, message.imageUrl, message.readAt].join('¦')).join('¶');
+      const latestId = newest ? String(newest.id) : '';
+      const previousLatestId = this.data.messages.length ? String(this.data.messages[this.data.messages.length - 1].id) : '';
+      if (silent && signature === this.messageSignature) return;
+      this.messageSignature = signature;
       if (newest) {
         const user = getApp().globalData.user || {};
         wx.setStorageSync(`qianqian_love_seen_${user.username || 'guest'}`, String(newest.id));
       }
-      this.setData({ messages, loading: false, scrollToId: newest ? `message-${newest.id}` : '' });
+      const shouldScroll = !silent || latestId !== previousLatestId;
+      this.setData({ messages, loading: false, scrollToId: shouldScroll && newest ? `message-${newest.id}` : '' });
     } catch (error) {
       if (handleExpired(error)) return;
       if (!silent) this.setData({ loading: false, status: error.message || '留言加载失败' });

@@ -11,7 +11,7 @@
 .bubble { max-width: 74%; padding: 18rpx 22rpx; box-sizing: border-box; border-radius: 8rpx 25rpx 25rpx 25rpx; color: #3c3034; background: #fff; box-shadow: 0 8rpx 22rpx rgba(100,58,70,.08); font-size: 26rpx; line-height: 1.55; word-break: break-word; }
 .mine .bubble { color: #fff; background: linear-gradient(135deg, #e84f71, #f27d97); border-radius: 25rpx 8rpx 25rpx 25rpx; }
 .image-bubble { width: 470rpx; padding: 7rpx; overflow: hidden; }
-.message-image { display: block; width: 100%; max-height: 560rpx; border-radius: 19rpx; }
+.message-image { display: block; width: 100%; height: auto; border-radius: 19rpx; }
 .caption { display: block; padding: 14rpx 13rpx 11rpx; }
 .meta { margin: 7rpx 13rpx 0; display: flex; gap: 12rpx; color: #aa9299; font-size: 17rpx; }
 .read-state { color: #d34d6d; font-weight: 750; }
