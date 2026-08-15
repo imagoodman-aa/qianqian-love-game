@@ -235,6 +235,21 @@
       touch-action: manipulation;
     }
 
+    .quick-logout {
+      min-height: 34px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.66);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 750;
+      touch-action: manipulation;
+    }
+
+    .quick-logout:active { transform: scale(.96); }
+
     .unread-dot {
       position: absolute;
       top: -2px;
@@ -823,6 +838,7 @@
           💌 留言
           <i class="unread-dot hidden" id="unread-dot" aria-hidden="true"></i>
         </button>
+        <button class="quick-logout" id="top-logout" type="button" aria-label="退出登录并返回登录界面">退出</button>
       </div>
     </header>
 
@@ -1242,11 +1258,14 @@
         }
       });
 
-      document.querySelector('#logout-button').addEventListener('click', async () => {
+      async function performLogout() {
         if (!confirm('要退出当前账号吗？')) return;
         try { await callLoveApi('logout'); } catch { /* Local logout still proceeds. */ }
         leaveApp('已经安全退出');
-      });
+      }
+
+      document.querySelector('#logout-button').addEventListener('click', performLogout);
+      document.querySelector('#top-logout').addEventListener('click', performLogout);
 
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden && notesOverlay.classList.contains('open')) loadMessages(true);
