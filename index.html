@@ -45,6 +45,121 @@
 
     button { font: inherit; }
 
+    .auth-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: calc(22px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom));
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255, 193, 210, .72), transparent 28%),
+        radial-gradient(circle at 88% 86%, rgba(255, 215, 106, .48), transparent 27%),
+        var(--cream);
+      transition: opacity .42s ease, visibility .42s ease;
+    }
+
+    .auth-screen.gone {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-card {
+      position: relative;
+      width: min(100%, 410px);
+      padding: 32px 25px 25px;
+      overflow: hidden;
+      border: 1px solid rgba(111, 62, 74, .08);
+      border-radius: 34px;
+      background: rgba(255, 253, 251, .92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .auth-card::after {
+      content: "♥";
+      position: absolute;
+      right: -12px;
+      top: -53px;
+      color: rgba(232, 79, 113, .07);
+      font-size: 180px;
+      line-height: 1;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+
+    .auth-mark {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 24px;
+      border-radius: 19px;
+      color: white;
+      background: linear-gradient(135deg, #ef5c7d, #d83b61);
+      box-shadow: 0 12px 24px rgba(216, 59, 97, .25);
+      font-size: 24px;
+    }
+
+    .auth-kicker {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 7px;
+      color: var(--berry);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .17em;
+    }
+
+    .auth-card h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px;
+      font-size: clamp(30px, 9vw, 40px);
+      letter-spacing: -.04em;
+    }
+
+    .auth-copy {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .auth-form { position: relative; z-index: 1; transition: opacity .2s ease; }
+    .auth-screen.checking .auth-form { opacity: .45; pointer-events: none; }
+
+    .field { display: block; margin-bottom: 14px; }
+    .field > span { display: block; margin: 0 0 7px 3px; font-size: 12px; font-weight: 750; }
+    .field input {
+      width: 100%;
+      min-height: 54px;
+      padding: 0 16px;
+      border: 1px solid #eadbdd;
+      border-radius: 17px;
+      outline: 0;
+      color: var(--ink);
+      background: #fffafa;
+      font: inherit;
+      font-size: 16px;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field input:focus { border-color: var(--berry); box-shadow: 0 0 0 4px rgba(232, 79, 113, .10); }
+    .auth-submit { margin-top: 5px; }
+    .auth-error { min-height: 20px; margin: 12px 2px 0; color: var(--berry-dark); font-size: 12px; text-align: center; }
+    .auth-foot { margin: 18px 0 0; color: #ad8f95; font-size: 10px; text-align: center; }
+
+    body:not(.authenticated) .app { opacity: 0; pointer-events: none; }
+    body.authenticated .app { opacity: 1; }
+
     .app {
       position: relative;
       width: 100%;
@@ -78,7 +193,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      pointer-events: none;
+      pointer-events: auto;
     }
 
     .brand {
@@ -102,6 +217,36 @@
     }
 
     .progress { display: flex; gap: 7px; }
+
+    .topbar-tools { display: flex; align-items: center; gap: 10px; }
+
+    .notes-trigger {
+      position: relative;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(232, 79, 113, .13);
+      border-radius: 999px;
+      color: var(--berry-dark);
+      background: rgba(255,255,255,.78);
+      box-shadow: var(--soft-shadow);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 800;
+      touch-action: manipulation;
+    }
+
+    .unread-dot {
+      position: absolute;
+      top: -2px;
+      right: -1px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid var(--cream);
+      border-radius: 50%;
+      background: var(--berry);
+    }
+
+    .unread-dot.hidden { display: none; }
 
     .progress span {
       width: 7px;
@@ -480,6 +625,140 @@
       text-align: center;
     }
 
+    .notes-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 160;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
+      background: rgba(61, 36, 43, .38);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity .28s ease, visibility .28s ease;
+    }
+
+    .notes-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+
+    .notes-sheet {
+      width: min(100%, 500px);
+      height: min(86dvh, 760px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(111, 62, 74, .08);
+      border-radius: 31px;
+      background: var(--cream);
+      box-shadow: 0 24px 80px rgba(59, 27, 36, .28);
+      transform: translateY(24px);
+      transition: transform .32s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .notes-overlay.open .notes-sheet { transform: translateY(0); }
+
+    .notes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 19px 20px 14px;
+      border-bottom: 1px solid #ecdddf;
+    }
+
+    .notes-header small { display: block; margin-bottom: 2px; color: var(--berry); font-size: 9px; font-weight: 800; letter-spacing: .14em; }
+    .notes-header h2 { margin: 0; font-size: 22px; }
+
+    .icon-button {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 14px;
+      color: var(--ink);
+      background: #f3e7e8;
+      cursor: pointer;
+      font-size: 21px;
+    }
+
+    .message-list {
+      flex: 1;
+      min-height: 0;
+      padding: 18px 17px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+
+    .messages-loading, .messages-empty {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .message-row { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 15px; }
+    .message-row.mine { align-items: flex-end; }
+    .message-author { margin: 0 8px 5px; color: var(--muted); font-size: 9px; font-weight: 750; }
+    .message-bubble {
+      max-width: 82%;
+      padding: 11px 14px;
+      border: 1px solid #ecdcdf;
+      border-radius: 8px 19px 19px 19px;
+      background: white;
+      box-shadow: 0 6px 15px rgba(94, 46, 58, .07);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .message-row.mine .message-bubble {
+      color: white;
+      border-color: transparent;
+      border-radius: 19px 8px 19px 19px;
+      background: linear-gradient(135deg, #ef6885, #d94266);
+    }
+
+    .message-time { margin: 5px 8px 0; color: #b0959b; font-size: 8px; }
+
+    .message-composer {
+      padding: 12px 14px 10px;
+      border-top: 1px solid #ecdddf;
+      background: rgba(255,253,251,.94);
+    }
+
+    .composer-row { display: grid; grid-template-columns: 1fr auto; gap: 9px; align-items: end; }
+    .message-composer textarea {
+      width: 100%;
+      min-height: 48px;
+      max-height: 108px;
+      resize: none;
+      padding: 12px 14px;
+      border: 1px solid #eadbdd;
+      border-radius: 17px;
+      outline: 0;
+      color: var(--ink);
+      background: #fffafa;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .message-composer textarea:focus { border-color: var(--berry); box-shadow: 0 0 0 4px rgba(232,79,113,.08); }
+    .send-message { width: 48px; min-height: 48px; border-radius: 16px; font-size: 18px; }
+    .composer-status { min-height: 15px; margin: 6px 2px 0; color: var(--muted); font-size: 9px; }
+    .notes-footer { display: flex; align-items: center; justify-content: space-between; padding: 0 18px 11px; color: var(--muted); font-size: 9px; }
+    .logout-button { padding: 4px 0; border: 0; color: var(--berry-dark); background: transparent; cursor: pointer; font-size: 10px; }
+
     @keyframes bob { 50% { transform: translateY(-7px) rotate(4deg); } }
     @keyframes heartIn { from { transform: scale(0); opacity: 0; } }
     @keyframes float { to { transform: translateY(-8px) rotate(5deg); } }
@@ -497,6 +776,9 @@
       .product-name { margin-top: 15px; }
       .manual-row { padding: 10px 2px; }
       .reel { height: 112px; }
+      .auth-card { padding-top: 23px; }
+      .auth-mark { margin-bottom: 14px; }
+      .auth-copy { margin-bottom: 16px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -505,14 +787,42 @@
   </style>
 </head>
 <body>
+  <section class="auth-screen checking" id="auth-screen" aria-labelledby="auth-title">
+    <div class="auth-card">
+      <div class="auth-mark" aria-hidden="true">♥</div>
+      <p class="auth-kicker">OUR LITTLE WORLD</p>
+      <h1 id="auth-title">欢迎回到<br>我们的小世界</h1>
+      <p class="auth-copy">这里有小游戏，也有只属于我们两个人的留言。</p>
+      <form class="auth-form" id="auth-form">
+        <label class="field">
+          <span>用户名</span>
+          <input id="login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="输入用户名" required>
+        </label>
+        <label class="field">
+          <span>密码</span>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="输入密码" required>
+        </label>
+        <button class="primary auth-submit" id="login-submit" type="submit">进入快乐补给站</button>
+        <p class="auth-error" id="auth-error" role="alert" aria-live="polite">正在确认身份…</p>
+      </form>
+      <p class="auth-foot">仅限 James 与芊芊进入 · 登录状态保留 30 天</p>
+    </div>
+  </section>
+
   <main class="app">
     <div class="blob one"></div>
     <div class="blob two"></div>
 
     <header class="topbar">
       <div class="brand"><span class="brand-mark">♥</span><span>快乐补给站</span></div>
-      <div class="progress" aria-label="当前进度">
-        <span class="active"></span><span></span><span></span>
+      <div class="topbar-tools">
+        <div class="progress" aria-label="当前进度">
+          <span class="active"></span><span></span><span></span>
+        </div>
+        <button class="notes-trigger" id="open-notes" type="button" aria-label="打开我们的留言板">
+          💌 留言
+          <i class="unread-dot hidden" id="unread-dot" aria-hidden="true"></i>
+        </button>
       </div>
     </header>
 
@@ -621,6 +931,29 @@
     <div class="love-toast" id="toast" role="status" aria-live="polite"></div>
   </main>
 
+  <div class="notes-overlay" id="notes-overlay" aria-hidden="true">
+    <section class="notes-sheet" role="dialog" aria-modal="true" aria-labelledby="notes-title">
+      <header class="notes-header">
+        <div><small>JUST FOR US</small><h2 id="notes-title">我们的留言板</h2></div>
+        <button class="icon-button" id="close-notes" type="button" aria-label="关闭留言板">×</button>
+      </header>
+      <div class="message-list" id="message-list" aria-live="polite">
+        <div class="messages-loading">正在加载我们的悄悄话…</div>
+      </div>
+      <form class="message-composer" id="message-form">
+        <div class="composer-row">
+          <textarea id="message-input" maxlength="500" rows="1" placeholder="写一句想对 TA 说的话…" aria-label="留言内容" required></textarea>
+          <button class="primary send-message" id="send-message" type="submit" aria-label="发送留言">↑</button>
+        </div>
+        <p class="composer-status" id="composer-status" aria-live="polite">留言会同步到对方的手机</p>
+      </form>
+      <footer class="notes-footer">
+        <span>当前用户：<strong id="current-user">—</strong></span>
+        <button class="logout-button" id="logout-button" type="button">退出登录</button>
+      </footer>
+    </section>
+  </div>
+
   <script>
     (() => {
       const screens = [...document.querySelectorAll('.screen')];
@@ -631,9 +964,29 @@
       const timeEl = document.querySelector('#time');
       const scoreEl = document.querySelector('#score');
       const toast = document.querySelector('#toast');
+      const LOVE_API = 'https://hctlyoavylhaebqpukbn.supabase.co/functions/v1/love-board';
+      const SESSION_KEY = 'qianqian_love_session_v1';
+      const authScreen = document.querySelector('#auth-screen');
+      const authForm = document.querySelector('#auth-form');
+      const authError = document.querySelector('#auth-error');
+      const loginUsername = document.querySelector('#login-username');
+      const loginPassword = document.querySelector('#login-password');
+      const loginSubmit = document.querySelector('#login-submit');
+      const notesOverlay = document.querySelector('#notes-overlay');
+      const messageList = document.querySelector('#message-list');
+      const messageForm = document.querySelector('#message-form');
+      const messageInput = document.querySelector('#message-input');
+      const sendMessageButton = document.querySelector('#send-message');
+      const composerStatus = document.querySelector('#composer-status');
+      const currentUserEl = document.querySelector('#current-user');
+      const unreadDot = document.querySelector('#unread-dot');
       let gameTimer = null;
       let spawnTimer = null;
       let toastTimer = null;
+      let messagePollTimer = null;
+      let unreadPollTimer = null;
+      let sessionToken = localStorage.getItem(SESSION_KEY) || '';
+      let signedInUser = null;
       let timeLeft = 10;
       let score = 0;
       let playing = false;
@@ -656,6 +1009,248 @@
         { emoji: '🛍️', name: '陪逛街' },
         { emoji: '💌', name: '夸你十次' }
       ];
+
+      async function callLoveApi(action, payload = {}, token = sessionToken) {
+        let response;
+        try {
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers['x-love-session'] = token;
+          response = await fetch(LOVE_API, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ action, ...payload })
+          });
+        } catch {
+          const error = new Error('网络连接失败，请稍后重试');
+          error.status = 0;
+          throw error;
+        }
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const error = new Error(data.error || '服务暂时不可用');
+          error.status = response.status;
+          throw error;
+        }
+        return data;
+      }
+
+      function enterApp(user) {
+        signedInUser = user;
+        document.body.classList.add('authenticated');
+        authScreen.classList.add('gone');
+        authScreen.setAttribute('aria-hidden', 'true');
+        currentUserEl.textContent = user.displayName;
+        clearInterval(unreadPollTimer);
+        checkForUnread();
+        unreadPollTimer = setInterval(checkForUnread, 30000);
+      }
+
+      function leaveApp(message = '') {
+        sessionToken = '';
+        signedInUser = null;
+        localStorage.removeItem(SESSION_KEY);
+        clearInterval(messagePollTimer);
+        clearInterval(unreadPollTimer);
+        closeNotes();
+        document.body.classList.remove('authenticated');
+        authScreen.classList.remove('gone', 'checking');
+        authScreen.removeAttribute('aria-hidden');
+        authError.textContent = message;
+        loginPassword.value = '';
+        loginSubmit.disabled = false;
+        loginSubmit.textContent = '进入快乐补给站';
+        setTimeout(() => loginUsername.focus(), 350);
+      }
+
+      async function initAuth() {
+        if (!sessionToken) {
+          authScreen.classList.remove('checking');
+          authError.textContent = '';
+          return;
+        }
+
+        try {
+          const data = await callLoveApi('me');
+          enterApp(data.user);
+        } catch {
+          leaveApp('登录已过期，请重新登录');
+        } finally {
+          authScreen.classList.remove('checking');
+        }
+      }
+
+      authForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        authError.textContent = '';
+        loginSubmit.disabled = true;
+        loginSubmit.textContent = '正在进入…';
+
+        try {
+          const data = await callLoveApi('login', {
+            username: loginUsername.value,
+            password: loginPassword.value
+          }, '');
+          sessionToken = data.token;
+          localStorage.setItem(SESSION_KEY, sessionToken);
+          loginPassword.value = '';
+          enterApp(data.user);
+          showToast(`欢迎回来，${data.user.displayName} ♥`);
+        } catch (error) {
+          authError.textContent = error.message;
+          loginPassword.focus();
+          loginPassword.select();
+        } finally {
+          loginSubmit.disabled = false;
+          loginSubmit.textContent = '进入快乐补给站';
+        }
+      });
+
+      function formatMessageTime(value) {
+        return new Intl.DateTimeFormat('zh-CN', {
+          month: 'numeric',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Shanghai'
+        }).format(new Date(value));
+      }
+
+      function renderMessages(messages) {
+        const wasNearBottom = messageList.scrollHeight - messageList.scrollTop - messageList.clientHeight < 90;
+        messageList.replaceChildren();
+
+        if (!messages.length) {
+          const empty = document.createElement('div');
+          empty.className = 'messages-empty';
+          empty.textContent = '还没有留言。\n先写下第一句悄悄话吧 💌';
+          messageList.appendChild(empty);
+          return;
+        }
+
+        messages.forEach((message) => {
+          const row = document.createElement('article');
+          const author = document.createElement('div');
+          const bubble = document.createElement('div');
+          const time = document.createElement('time');
+          row.className = `message-row${message.mine ? ' mine' : ''}`;
+          author.className = 'message-author';
+          bubble.className = 'message-bubble';
+          time.className = 'message-time';
+          author.textContent = message.mine ? '我' : message.displayName;
+          bubble.textContent = message.content;
+          time.dateTime = message.createdAt;
+          time.textContent = formatMessageTime(message.createdAt);
+          row.append(author, bubble, time);
+          messageList.appendChild(row);
+        });
+
+        if (wasNearBottom || !messageList.dataset.loaded) {
+          requestAnimationFrame(() => { messageList.scrollTop = messageList.scrollHeight; });
+        }
+        messageList.dataset.loaded = 'true';
+      }
+
+      function seenKey() {
+        return `qianqian_love_seen_${signedInUser?.username || 'guest'}`;
+      }
+
+      async function loadMessages(silent = false) {
+        if (!sessionToken) return;
+        if (!silent && !messageList.dataset.loaded) {
+          messageList.innerHTML = '<div class="messages-loading">正在加载我们的悄悄话…</div>';
+        }
+        try {
+          const data = await callLoveApi('list');
+          renderMessages(data.messages);
+          const newest = data.messages.at(-1);
+          if (newest) localStorage.setItem(seenKey(), String(newest.id));
+          unreadDot.classList.add('hidden');
+          composerStatus.textContent = '留言会同步到对方的手机';
+        } catch (error) {
+          if (error.status === 401) return leaveApp('登录已过期，请重新登录');
+          if (!silent) {
+            composerStatus.textContent = error.message;
+            if (!messageList.dataset.loaded) {
+              messageList.innerHTML = '<div class="messages-empty">留言加载失败，请稍后再试</div>';
+            }
+          }
+        }
+      }
+
+      async function checkForUnread() {
+        if (!sessionToken || notesOverlay.classList.contains('open')) return;
+        try {
+          const data = await callLoveApi('list');
+          const lastSeen = Number(localStorage.getItem(seenKey()) || 0);
+          const hasUnread = data.messages.some(message => !message.mine && Number(message.id) > lastSeen);
+          unreadDot.classList.toggle('hidden', !hasUnread);
+        } catch (error) {
+          if (error.status === 401) leaveApp('登录已过期，请重新登录');
+        }
+      }
+
+      function openNotes() {
+        notesOverlay.classList.add('open');
+        notesOverlay.setAttribute('aria-hidden', 'false');
+        messageList.removeAttribute('data-loaded');
+        loadMessages();
+        clearInterval(messagePollTimer);
+        messagePollTimer = setInterval(() => loadMessages(true), 8000);
+        setTimeout(() => messageInput.focus(), 320);
+      }
+
+      function closeNotes() {
+        notesOverlay.classList.remove('open');
+        notesOverlay.setAttribute('aria-hidden', 'true');
+        clearInterval(messagePollTimer);
+      }
+
+      document.querySelector('#open-notes').addEventListener('click', openNotes);
+      document.querySelector('#close-notes').addEventListener('click', closeNotes);
+      notesOverlay.addEventListener('click', (event) => {
+        if (event.target === notesOverlay) closeNotes();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && notesOverlay.classList.contains('open')) closeNotes();
+      });
+
+      messageInput.addEventListener('input', () => {
+        messageInput.style.height = 'auto';
+        messageInput.style.height = `${Math.min(messageInput.scrollHeight, 108)}px`;
+      });
+
+      messageForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const content = messageInput.value.trim();
+        if (!content) return;
+        sendMessageButton.disabled = true;
+        composerStatus.textContent = '正在发送…';
+        try {
+          await callLoveApi('send', { content });
+          messageInput.value = '';
+          messageInput.style.height = 'auto';
+          await loadMessages(true);
+          composerStatus.textContent = '发送成功，对方可以看到啦 ♥';
+        } catch (error) {
+          if (error.status === 401) return leaveApp('登录已过期，请重新登录');
+          composerStatus.textContent = error.message;
+        } finally {
+          sendMessageButton.disabled = false;
+          messageInput.focus();
+        }
+      });
+
+      document.querySelector('#logout-button').addEventListener('click', async () => {
+        if (!confirm('要退出当前账号吗？')) return;
+        try { await callLoveApi('logout'); } catch { /* Local logout still proceeds. */ }
+        leaveApp('已经安全退出');
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && notesOverlay.classList.contains('open')) loadMessages(true);
+      });
 
       function goTo(step) {
         screens.forEach((screen, index) => screen.classList.toggle('active', index === step));
@@ -803,6 +1398,7 @@
       }
 
       spinButton.addEventListener('click', spin);
+      initAuth();
     })();
   </script>
 </body>
