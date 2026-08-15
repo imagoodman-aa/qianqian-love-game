@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#fff8f3">
+  <link rel="icon" href="data:,">
+  <title>给宝贝的快乐补给站</title>
+  <style>
+    :root {
+      --ink: #3c252c;
+      --muted: #8d6e75;
+      --berry: #e84f71;
+      --berry-dark: #c9365a;
+      --pink: #ffb5c6;
+      --blush: #ffe6eb;
+      --cream: #fff8f3;
+      --yellow: #ffd76a;
+      --white: #fffdfb;
+      --green: #6dbd9b;
+      --shadow: 0 18px 45px rgba(132, 64, 82, .15);
+      --soft-shadow: 0 8px 22px rgba(132, 64, 82, .11);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255, 209, 219, .65), transparent 25%),
+        radial-gradient(circle at 88% 82%, rgba(255, 220, 119, .40), transparent 25%),
+        var(--cream);
+    }
+
+    button { font: inherit; }
+
+    .app {
+      position: relative;
+      width: 100%;
+      min-height: 100dvh;
+      max-width: 520px;
+      margin: 0 auto;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .blob {
+      position: fixed;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(2px);
+      opacity: .65;
+      pointer-events: none;
+    }
+
+    .blob.one { width: 170px; height: 170px; background: #ffd5df; top: -55px; right: -65px; }
+    .blob.two { width: 130px; height: 130px; background: #ffe7a8; bottom: 8%; left: -70px; }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      z-index: 30;
+      width: min(100%, 520px);
+      padding: calc(14px + env(safe-area-inset-top)) 22px 10px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .04em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 11px;
+      color: white;
+      background: var(--berry);
+      box-shadow: 0 7px 16px rgba(232, 79, 113, .28);
+    }
+
+    .progress { display: flex; gap: 7px; }
+
+    .progress span {
+      width: 7px;
+      height: 7px;
+      border-radius: 10px;
+      background: #e9d8d9;
+      transition: width .35s ease, background .35s ease;
+    }
+
+    .progress span.active { width: 24px; background: var(--berry); }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      padding: calc(76px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom));
+      overflow-x: hidden;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateX(24px) scale(.985);
+      pointer-events: none;
+      transition: opacity .38s ease, transform .38s ease;
+    }
+
+    .screen.active {
+      position: relative;
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--berry);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1, h2 {
+      margin-bottom: 10px;
+      line-height: 1.18;
+      letter-spacing: -.03em;
+    }
+
+    h1 { font-size: clamp(34px, 10vw, 48px); }
+    h2 { font-size: clamp(29px, 8vw, 38px); }
+
+    .subtitle {
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .card {
+      border: 1px solid rgba(111, 62, 74, .08);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 251, .88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .primary, .secondary {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 18px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+      touch-action: manipulation;
+    }
+
+    .primary {
+      color: white;
+      background: linear-gradient(135deg, #ef5c7d, #d83b61);
+      box-shadow: 0 12px 24px rgba(216, 59, 97, .28);
+    }
+
+    .secondary {
+      color: var(--ink);
+      background: #f7ecec;
+    }
+
+    .primary:active, .secondary:active { transform: scale(.975); }
+    .primary:disabled { opacity: .55; cursor: default; }
+
+    /* Game 1 */
+    .game-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .stat {
+      padding: 12px 15px;
+      border-radius: 19px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .stat-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .stat-value { margin-top: 2px; font-size: 23px; font-weight: 850; }
+
+    .heart-arena {
+      position: relative;
+      flex: 1;
+      min-height: 355px;
+      max-height: 500px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 79, 113, .12);
+      border-radius: 32px;
+      background:
+        linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,.45)),
+        repeating-linear-gradient(0deg, transparent 0 35px, rgba(232,79,113,.035) 35px 36px),
+        #fff1f4;
+      box-shadow: inset 0 0 60px rgba(255,255,255,.72), var(--shadow);
+    }
+
+    .arena-start, .arena-result {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      text-align: center;
+      background: rgba(255, 248, 248, .87);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity .28s ease;
+    }
+
+    .arena-start.hidden, .arena-result.hidden { opacity: 0; pointer-events: none; }
+    .arena-result { opacity: 1; }
+    .arena-icon { margin-bottom: 13px; font-size: 58px; animation: bob 2s ease-in-out infinite; }
+    .arena-start h3, .arena-result h3 { margin: 0 0 8px; font-size: 24px; }
+    .arena-start p, .arena-result p { margin-bottom: 20px; color: var(--muted); line-height: 1.6; }
+
+    .heart {
+      position: absolute;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 35px;
+      line-height: 1;
+      cursor: pointer;
+      background: rgba(255,255,255,.77);
+      box-shadow: 0 8px 20px rgba(167, 62, 90, .18);
+      animation: heartIn .24s cubic-bezier(.2,.9,.3,1.4), float 1.4s ease-in-out infinite alternate;
+      touch-action: manipulation;
+    }
+
+    .heart.special {
+      background: #fff4bf;
+      box-shadow: 0 0 0 6px rgba(255,215,106,.22), 0 10px 24px rgba(180,135,22,.22);
+    }
+
+    .heart.caught { animation: caught .28s ease forwards; pointer-events: none; }
+
+    .love-toast {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 80;
+      width: min(82%, 390px);
+      padding: 16px 20px;
+      border-radius: 20px;
+      color: var(--ink);
+      background: white;
+      box-shadow: 0 18px 60px rgba(92, 42, 55, .25);
+      text-align: center;
+      font-weight: 750;
+      opacity: 0;
+      transform: translate(-50%, -38%) scale(.9);
+      pointer-events: none;
+      transition: .3s ease;
+    }
+
+    .love-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    /* Manual */
+    .product-card { overflow: hidden; }
+
+    .product-hero {
+      position: relative;
+      min-height: 178px;
+      padding: 24px;
+      overflow: hidden;
+      background: linear-gradient(140deg, #f76f8c 0%, #df4167 72%);
+      color: white;
+    }
+
+    .product-hero::after {
+      content: "♥";
+      position: absolute;
+      right: -13px;
+      bottom: -51px;
+      font-size: 190px;
+      color: rgba(255,255,255,.10);
+      transform: rotate(-15deg);
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.17);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .product-name { position: relative; z-index: 1; margin: 22px 0 7px; font-size: 28px; font-weight: 850; }
+    .serial { position: relative; z-index: 1; margin: 0; color: rgba(255,255,255,.76); font-size: 12px; }
+
+    .manual-list { padding: 8px 18px 4px; }
+
+    .manual-row {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 13px;
+      align-items: center;
+      padding: 15px 2px;
+      border-bottom: 1px dashed #eddcdf;
+    }
+
+    .manual-row:last-child { border-bottom: 0; }
+
+    .manual-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: #fff0f3;
+      font-size: 23px;
+    }
+
+    .manual-row h3 { margin: 0 0 3px; font-size: 14px; }
+    .manual-row p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 14px 0;
+      padding: 13px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      font-size: 12px;
+    }
+
+    .stars { color: #f4ad31; letter-spacing: 2px; }
+    .manual-actions { display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px; }
+
+    /* Slot */
+    .slot-card { padding: 20px 16px 17px; }
+
+    .slot-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 4px 16px;
+    }
+
+    .slot-label { font-size: 12px; font-weight: 800; }
+    .slot-light { display: flex; gap: 5px; }
+    .slot-light i { width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+
+    .reels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px;
+      border: 5px solid #5f313c;
+      border-radius: 25px;
+      background: #2f1d22;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.15), 0 13px 26px rgba(69,33,42,.2);
+    }
+
+    .reel {
+      position: relative;
+      height: 126px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: linear-gradient(#f9e7e5, #fff 20%, #fff 80%, #f9e7e5);
+      box-shadow: inset 0 0 12px rgba(59,22,30,.12);
+    }
+
+    .reel::before, .reel::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      height: 28px;
+      pointer-events: none;
+    }
+
+    .reel::before { top: 0; background: linear-gradient(#ead5d4, transparent); }
+    .reel::after { bottom: 0; background: linear-gradient(transparent, #ead5d4); }
+
+    .reel-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      text-align: center;
+    }
+
+    .reel.spinning .reel-content { animation: reelSpin .16s linear infinite; }
+    .reel-emoji { font-size: 38px; }
+    .reel-name { min-height: 30px; padding: 0 4px; font-size: 12px; font-weight: 800; line-height: 1.25; }
+
+    .slot-copy {
+      min-height: 49px;
+      margin: 17px 4px 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .slot-actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+    .ticket {
+      position: relative;
+      display: none;
+      margin-top: 13px;
+      padding: 19px 18px;
+      overflow: hidden;
+      border: 2px dashed #e7a3b1;
+      border-radius: 23px;
+      background: #fff5f6;
+      text-align: center;
+      animation: rise .4s ease;
+    }
+
+    .ticket.show { display: block; }
+    .ticket small { display: block; margin-bottom: 5px; color: var(--berry); font-weight: 800; letter-spacing: .12em; }
+    .ticket strong { display: block; font-size: 19px; }
+    .ticket p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      z-index: 100;
+      width: 9px;
+      height: 15px;
+      border-radius: 3px;
+      pointer-events: none;
+      animation: confettiFall 2.4s linear forwards;
+    }
+
+    .footer-note {
+      margin: auto 0 0;
+      padding-top: 18px;
+      color: #ad8f95;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    @keyframes bob { 50% { transform: translateY(-7px) rotate(4deg); } }
+    @keyframes heartIn { from { transform: scale(0); opacity: 0; } }
+    @keyframes float { to { transform: translateY(-8px) rotate(5deg); } }
+    @keyframes caught { to { transform: scale(1.7); opacity: 0; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+    @keyframes reelSpin { 50% { transform: translateY(13px); filter: blur(2px); } }
+    @keyframes confettiFall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(760deg); opacity: .8; } }
+
+    @media (max-height: 720px) {
+      .screen { padding-top: calc(66px + env(safe-area-inset-top)); }
+      h1 { font-size: 32px; }
+      .subtitle { margin-bottom: 13px; line-height: 1.45; }
+      .heart-arena { min-height: 330px; }
+      .product-hero { min-height: 145px; padding: 19px 22px; }
+      .product-name { margin-top: 15px; }
+      .manual-row { padding: 10px 2px; }
+      .reel { height: 112px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">♥</span><span>快乐补给站</span></div>
+      <div class="progress" aria-label="当前进度">
+        <span class="active"></span><span></span><span></span>
+      </div>
+    </header>
+
+    <section class="screen active" id="screen-love" data-step="0">
+      <p class="eyebrow">LEVEL 01 · 心动捕手</p>
+      <h1>抓住我的爱</h1>
+      <p class="subtitle">爱心会到处乱跑。抓住它们，看看我偷偷藏了多少喜欢。</p>
+
+      <div class="game-meta">
+        <div class="stat">
+          <div class="stat-label">剩余时间</div>
+          <div class="stat-value"><span id="time">10</span><small style="font-size:12px"> 秒</small></div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">收集爱意</div>
+          <div class="stat-value"><span id="score">0</span><small style="font-size:12px"> 点</small></div>
+        </div>
+      </div>
+
+      <div class="heart-arena" id="arena">
+        <div class="arena-start" id="arena-start">
+          <div class="arena-icon">💗</div>
+          <h3>准备好了吗？</h3>
+          <p>普通爱心 +1，金色爱心 +5<br>限时 10 秒，手速要快哦</p>
+          <button class="primary" id="start-love" type="button">开始抓爱心</button>
+        </div>
+        <div class="arena-result hidden" id="arena-result">
+          <div class="arena-icon">💞</div>
+          <h3>喜欢超标啦！</h3>
+          <p id="result-copy">经检测，你已经被我爱得无法逃脱。</p>
+          <button class="primary" id="to-manual" type="button">查看男朋友说明书 →</button>
+        </div>
+      </div>
+      <p class="footer-note">女朋友专属 · 本页面的爱意长期有效</p>
+    </section>
+
+    <section class="screen" id="screen-manual" data-step="1">
+      <p class="eyebrow">LEVEL 02 · 产品档案</p>
+      <h2>男朋友使用说明书</h2>
+      <p class="subtitle">本产品仅限一人拥有，请认真阅读后再决定是否续费。</p>
+
+      <article class="card product-card">
+        <div class="product-hero">
+          <span class="tag">女朋友专属款 · 不对外出售</span>
+          <div class="product-name">专属笨蛋男朋友</div>
+          <p class="serial">型号：BF-FOREVER · 已激活</p>
+        </div>
+        <div class="manual-list">
+          <div class="manual-row">
+            <div class="manual-icon">🧸</div>
+            <div><h3>主要功能</h3><p>陪吃、陪玩、拎包、提供无限抱抱。</p></div>
+          </div>
+          <div class="manual-row">
+            <div class="manual-icon">⚠️</div>
+            <div><h3>已知缺陷</h3><p>偶尔嘴欠，有时反应会慢半拍。</p></div>
+          </div>
+          <div class="manual-row">
+            <div class="manual-icon">🔧</div>
+            <div><h3>维修方法</h3><p>抱一下、亲一下，通常可以立刻恢复。</p></div>
+          </div>
+          <div class="manual-row">
+            <div class="manual-icon">🛡️</div>
+            <div><h3>售后服务</h3><p>终身保修，吵架也不会自动离线。</p></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="rating">
+        <span>当前用户评价</span><span class="stars">★★★★★</span><strong>超级喜欢</strong>
+      </div>
+      <div class="manual-actions">
+        <button class="secondary" id="manual-back" type="button">返回看看</button>
+        <button class="primary" id="renew" type="button">续费一辈子 ♥</button>
+      </div>
+      <p class="footer-note">温馨提示：点击续费后不支持反悔</p>
+    </section>
+
+    <section class="screen" id="screen-slot" data-step="2">
+      <p class="eyebrow">LEVEL 03 · 今日好运</p>
+      <h2>芊芊的老虎机</h2>
+      <p class="subtitle">按下按钮，看看今天能从男朋友这里赢走什么。</p>
+
+      <div class="card slot-card">
+        <div class="slot-top">
+          <span class="slot-label">LUCKY GIRL 777</span>
+          <span class="slot-light" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="reels" aria-live="polite">
+          <div class="reel"><div class="reel-content"><span class="reel-emoji">🥤</span><span class="reel-name">奶茶</span></div></div>
+          <div class="reel"><div class="reel-content"><span class="reel-emoji">🤗</span><span class="reel-name">抱抱</span></div></div>
+          <div class="reel"><div class="reel-content"><span class="reel-emoji">🙋‍♂️</span><span class="reel-name">听话一天</span></div></div>
+        </div>
+        <p class="slot-copy" id="slot-copy">幸运值已装满。点击开始，大奖马上送到！</p>
+        <div class="slot-actions">
+          <button class="primary" id="spin" type="button">开始哄我</button>
+        </div>
+        <div class="ticket" id="ticket">
+          <small>恭喜中奖</small>
+          <strong id="ticket-prize">奶茶＋抱抱＋听话一天</strong>
+          <p>兑奖口令：宝宝开心最重要 · 永不过期</p>
+        </div>
+      </div>
+      <p class="footer-note">最终解释权归全世界最可爱的女朋友所有</p>
+    </section>
+
+    <div class="love-toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (() => {
+      const screens = [...document.querySelectorAll('.screen')];
+      const dots = [...document.querySelectorAll('.progress span')];
+      const arena = document.querySelector('#arena');
+      const startLayer = document.querySelector('#arena-start');
+      const resultLayer = document.querySelector('#arena-result');
+      const timeEl = document.querySelector('#time');
+      const scoreEl = document.querySelector('#score');
+      const toast = document.querySelector('#toast');
+      let gameTimer = null;
+      let spawnTimer = null;
+      let toastTimer = null;
+      let timeLeft = 10;
+      let score = 0;
+      let playing = false;
+
+      const loveLines = [
+        '你一笑，我的心就自动投降。',
+        '今日份喜欢：比昨天又多一点。',
+        '你负责可爱，我负责一直爱。',
+        '想和你把普通日子过成纪念日。',
+        '别抓啦，我整颗心本来就是你的。'
+      ];
+
+      const prizes = [
+        { emoji: '🥤', name: '奶茶' },
+        { emoji: '🤗', name: '抱抱' },
+        { emoji: '🙋‍♂️', name: '听话一天' },
+        { emoji: '🍲', name: '火锅' },
+        { emoji: '💋', name: '亲亲' },
+        { emoji: '🎤', name: '唱首歌' },
+        { emoji: '🛍️', name: '陪逛街' },
+        { emoji: '💌', name: '夸你十次' }
+      ];
+
+      function goTo(step) {
+        screens.forEach((screen, index) => screen.classList.toggle('active', index === step));
+        dots.forEach((dot, index) => dot.classList.toggle('active', index === step));
+        screens[step].scrollTop = 0;
+      }
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 1450);
+      }
+
+      function spawnHeart() {
+        if (!playing) return;
+        const special = Math.random() < .2;
+        const heart = document.createElement('button');
+        const size = special ? 68 : 58 + Math.random() * 10;
+        const bounds = arena.getBoundingClientRect();
+        const maxX = Math.max(12, bounds.width - size - 12);
+        const maxY = Math.max(12, bounds.height - size - 12);
+        heart.type = 'button';
+        heart.className = `heart${special ? ' special' : ''}`;
+        heart.textContent = special ? '💛' : ['💗', '💖', '💕'][Math.floor(Math.random() * 3)];
+        heart.setAttribute('aria-label', special ? '金色爱心，加五分' : '爱心，加一分');
+        heart.style.width = `${size}px`;
+        heart.style.height = `${size}px`;
+        heart.style.left = `${12 + Math.random() * (maxX - 12)}px`;
+        heart.style.top = `${12 + Math.random() * (maxY - 12)}px`;
+
+        heart.addEventListener('click', () => {
+          if (!playing || heart.classList.contains('caught')) return;
+          score += special ? 5 : 1;
+          scoreEl.textContent = score;
+          heart.classList.add('caught');
+          if (special) showToast(`💛 ${loveLines[Math.floor(Math.random() * loveLines.length)]}`);
+          setTimeout(() => heart.remove(), 280);
+        }, { once: true });
+
+        arena.appendChild(heart);
+        setTimeout(() => heart.remove(), special ? 1250 : 1050);
+      }
+
+      function endGame() {
+        playing = false;
+        clearInterval(gameTimer);
+        clearInterval(spawnTimer);
+        arena.querySelectorAll('.heart').forEach(heart => heart.remove());
+        document.querySelector('#result-copy').textContent = `你一共抓到 ${score} 点爱意。经检测，你已经被我爱得无法逃脱。`;
+        resultLayer.classList.remove('hidden');
+      }
+
+      function startGame() {
+        if (playing) return;
+        timeLeft = 10;
+        score = 0;
+        playing = true;
+        timeEl.textContent = timeLeft;
+        scoreEl.textContent = score;
+        startLayer.classList.add('hidden');
+        resultLayer.classList.add('hidden');
+        spawnHeart();
+        spawnTimer = setInterval(spawnHeart, 470);
+        gameTimer = setInterval(() => {
+          timeLeft -= 1;
+          timeEl.textContent = timeLeft;
+          if (timeLeft <= 0) endGame();
+        }, 1000);
+      }
+
+      document.querySelector('#start-love').addEventListener('click', startGame);
+      document.querySelector('#to-manual').addEventListener('click', () => goTo(1));
+      document.querySelector('#manual-back').addEventListener('click', () => goTo(0));
+      document.querySelector('#renew').addEventListener('click', () => {
+        showToast('续费成功！有效期：一辈子 ♥');
+        setTimeout(() => goTo(2), 900);
+      });
+
+      const reels = [...document.querySelectorAll('.reel')];
+      const reelContents = [...document.querySelectorAll('.reel-content')];
+      const spinButton = document.querySelector('#spin');
+      const slotCopy = document.querySelector('#slot-copy');
+      const ticket = document.querySelector('#ticket');
+      let spinCount = 0;
+      let spinning = false;
+
+      function setReel(index, prize) {
+        reelContents[index].querySelector('.reel-emoji').textContent = prize.emoji;
+        reelContents[index].querySelector('.reel-name').textContent = prize.name;
+      }
+
+      function celebrate() {
+        const colors = ['#e84f71', '#ffd76a', '#6dbd9b', '#ff9cb3', '#8d7ae6'];
+        for (let i = 0; i < 42; i += 1) {
+          const bit = document.createElement('i');
+          bit.className = 'confetti';
+          bit.style.left = `${Math.random() * 100}vw`;
+          bit.style.background = colors[Math.floor(Math.random() * colors.length)];
+          bit.style.setProperty('--drift', `${-70 + Math.random() * 140}px`);
+          bit.style.animationDelay = `${Math.random() * .45}s`;
+          bit.style.animationDuration = `${1.7 + Math.random() * 1.2}s`;
+          document.body.appendChild(bit);
+          setTimeout(() => bit.remove(), 3300);
+        }
+      }
+
+      function spin() {
+        if (spinning) return;
+        spinning = true;
+        spinCount += 1;
+        ticket.classList.remove('show');
+        spinButton.disabled = true;
+        spinButton.textContent = '正在开奖…';
+        slotCopy.textContent = '好运正在赶来，请稍等一下…';
+        reels.forEach(reel => reel.classList.add('spinning'));
+
+        const shuffleTimer = setInterval(() => {
+          reelContents.forEach((_, index) => setReel(index, prizes[Math.floor(Math.random() * prizes.length)]));
+        }, 90);
+
+        const finalPrizes = spinCount === 1
+          ? [prizes[0], prizes[1], prizes[2]]
+          : Array.from({ length: 3 }, () => prizes[Math.floor(Math.random() * prizes.length)]);
+
+        reels.forEach((reel, index) => {
+          setTimeout(() => {
+            reel.classList.remove('spinning');
+            setReel(index, finalPrizes[index]);
+          }, 1050 + index * 380);
+        });
+
+        setTimeout(() => {
+          clearInterval(shuffleTimer);
+          finalPrizes.forEach((prize, index) => setReel(index, prize));
+          const names = finalPrizes.map(prize => prize.name).join('＋');
+          document.querySelector('#ticket-prize').textContent = names;
+          slotCopy.textContent = '哇！本次奖品由男朋友亲自负责兑现。';
+          ticket.classList.add('show');
+          spinButton.disabled = false;
+          spinButton.textContent = '再抽一次';
+          spinning = false;
+          celebrate();
+        }, 1950);
+      }
+
+      spinButton.addEventListener('click', spin);
+    })();
+  </script>
+</body>
+</html>
