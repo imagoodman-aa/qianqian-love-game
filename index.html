@@ -621,6 +621,64 @@
     .ticket strong { display: block; font-size: 19px; }
     .ticket p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
 
+    /* Couple draw */
+    .draw-card { position: relative; padding: 21px 18px 18px; overflow: hidden; text-align: center; }
+    .draw-card::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -90px;
+      top: -95px;
+      border-radius: 50%;
+      background: rgba(239, 92, 125, .08);
+    }
+
+    .draw-jar {
+      position: relative;
+      width: 96px;
+      height: 80px;
+      margin: 1px auto 15px;
+      border: 3px solid #e9b8c3;
+      border-top: 0;
+      border-radius: 12px 12px 29px 29px;
+      background: linear-gradient(180deg, rgba(255,255,255,.45), #fff0f3);
+      box-shadow: inset 0 -12px 20px rgba(226, 92, 123, .09);
+    }
+
+    .draw-jar::before { content: ""; position: absolute; left: -7px; right: -7px; top: -7px; height: 12px; border-radius: 999px; background: #d94a6c; }
+    .draw-stick { position: absolute; bottom: 12px; width: 9px; height: 67px; border-radius: 999px; background: #f3c46d; transform-origin: bottom; }
+    .draw-stick:nth-child(1) { left: 20px; transform: rotate(-12deg); }
+    .draw-stick:nth-child(2) { left: 36px; height: 73px; transform: rotate(-3deg); }
+    .draw-stick:nth-child(3) { right: 34px; height: 71px; transform: rotate(6deg); }
+    .draw-stick:nth-child(4) { right: 18px; height: 64px; transform: rotate(14deg); }
+    .draw-heart { position: absolute; z-index: 2; left: 50%; bottom: 13px; transform: translateX(-50%); font-size: 24px; }
+    .draw-card.drawing .draw-jar { animation: jarShake .13s ease-in-out infinite alternate; }
+
+    .draw-result {
+      position: relative;
+      min-height: 238px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      padding: 21px 18px;
+      border: 1px dashed #e7a7b5;
+      border-radius: 24px;
+      background: #fff8f8;
+      transition: transform .24s ease, opacity .24s ease;
+    }
+
+    .draw-card.drawing .draw-result { opacity: .45; transform: scale(.97); }
+    .draw-number { color: #b4929a; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+    .draw-category { margin-top: 8px; padding: 5px 10px; border-radius: 999px; color: var(--berry-dark); background: #f8e6ea; font-size: 10px; font-weight: 800; }
+    .draw-emoji { margin: 13px 0 6px; font-size: 43px; }
+    .draw-result h3 { margin: 0 0 7px; font-size: 21px; line-height: 1.35; }
+    .draw-result p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .draw-counter { margin: 10px 0 0; color: #aa8b93; font-size: 9px; }
+    .draw-actions { display: grid; grid-template-columns: .8fr 1.35fr; gap: 9px; margin-top: 12px; }
+
     .confetti {
       position: fixed;
       top: -20px;
@@ -810,6 +868,7 @@
     @keyframes caught { to { transform: scale(1.7); opacity: 0; } }
     @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
     @keyframes reelSpin { 50% { transform: translateY(13px); filter: blur(2px); } }
+    @keyframes jarShake { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
     @keyframes confettiFall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(760deg); opacity: .8; } }
 
     @media (max-height: 720px) {
@@ -862,7 +921,7 @@
       <div class="brand"><span class="brand-mark">♥</span><span>快乐补给站</span></div>
       <div class="topbar-tools">
         <div class="progress" aria-label="当前进度">
-          <span class="active"></span><span></span><span></span>
+          <span class="active"></span><span></span><span></span><span></span>
         </div>
         <button class="notes-trigger" id="open-notes" type="button" aria-label="打开我们的留言板">
           💌 留言
@@ -964,6 +1023,7 @@
         <p class="slot-copy" id="slot-copy">幸运值已装满。点击开始，大奖马上送到！</p>
         <div class="slot-actions">
           <button class="primary" id="spin" type="button">开始哄我</button>
+          <button class="secondary" id="to-draw" type="button">情侣今日抽签 →</button>
         </div>
         <div class="ticket" id="ticket">
           <small>恭喜中奖</small>
@@ -972,6 +1032,33 @@
         </div>
       </div>
       <p class="footer-note">最终解释权归全世界最可爱的女朋友所有</p>
+    </section>
+
+    <section class="screen" id="screen-draw" data-step="3">
+      <p class="eyebrow">LEVEL 04 · 今天做什么</p>
+      <h2>情侣今日抽签</h2>
+      <p class="subtitle">签筒里装着 100 件想和你一起做的事。犹豫的时候，就把决定交给运气。</p>
+
+      <div class="card draw-card" id="draw-card">
+        <div class="draw-jar" aria-hidden="true">
+          <i class="draw-stick"></i><i class="draw-stick"></i><i class="draw-stick"></i><i class="draw-stick"></i>
+          <span class="draw-heart">♥</span>
+        </div>
+        <div class="draw-result" id="draw-result" aria-live="polite">
+          <span class="draw-number" id="draw-number">LOVE LOT · 000</span>
+          <span class="draw-category" id="draw-category">等待抽签</span>
+          <div class="draw-emoji" id="draw-emoji">🎴</div>
+          <h3 id="draw-title">今天要一起做什么？</h3>
+          <p id="draw-copy">点一下按钮，抽到什么就认真考虑去做什么。</p>
+        </div>
+        <button class="primary" id="draw-activity" type="button">抽一支签</button>
+        <p class="draw-counter" id="draw-counter">本轮还有 100 支不重复的签</p>
+      </div>
+      <div class="draw-actions">
+        <button class="secondary" id="draw-back" type="button">← 返回</button>
+        <button class="primary" id="draw-again" type="button">换一个看看</button>
+      </div>
+      <p class="footer-note">抽到的不是命令，是今天相爱的一个小提议</p>
     </section>
 
     <div class="love-toast" id="toast" role="status" aria-live="polite"></div>
@@ -998,7 +1085,7 @@
           <textarea id="message-input" maxlength="500" rows="1" placeholder="写一句想对 TA 说的话…" aria-label="留言内容"></textarea>
           <button class="primary send-message" id="send-message" type="submit" aria-label="发送留言">↑</button>
         </div>
-        <p class="composer-status" id="composer-status" aria-live="polite">留言会同步到对方的手机</p>
+        <p class="composer-status" id="composer-status" aria-live="polite">Enter 发送 · Shift + Enter 换行</p>
       </form>
       <footer class="notes-footer">
         <span>当前用户：<strong id="current-user">—</strong></span>
@@ -1068,6 +1155,109 @@
         { emoji: '🎤', name: '唱首歌' },
         { emoji: '🛍️', name: '陪逛街' },
         { emoji: '💌', name: '夸你十次' }
+      ];
+
+      const coupleActivities = [
+        ['宅家时光', '🍿', '选一部两个人都没看过的电影，关灯认真看完'],
+        ['宅家时光', '📺', '各挑一集童年动画，一起重新看一次'],
+        ['宅家时光', '🧩', '合作完成一幅拼图'],
+        ['宅家时光', '🎮', '玩一局双人合作游戏'],
+        ['宅家时光', '🎨', '不许擦掉，互相画一张肖像'],
+        ['宅家时光', '⛺', '用毯子和枕头搭一个客厅帐篷'],
+        ['宅家时光', '📱', '翻手机相册，轮流讲照片背后的故事'],
+        ['宅家时光', '🍪', '做一次零食蒙眼盲测'],
+        ['宅家时光', '🎧', '一起整理一份“我们的歌”播放列表'],
+        ['宅家时光', '🧹', '放着喜欢的音乐一起收拾房间'],
+        ['宅家时光', '👗', '给对方搭配一套明天要穿的衣服'],
+        ['宅家时光', '💃', '跟着视频学一小段双人舞'],
+        ['宅家时光', '🎙️', '给一段影视片段做搞笑配音'],
+        ['宅家时光', '📵', '把手机放远，专心聊天三十分钟'],
+        ['宅家时光', '🥤', '各做一杯饮料，再互相打分'],
+        ['宅家时光', '💆', '轮流给对方按摩十分钟'],
+        ['宅家时光', '📖', '一起读完一个短篇故事'],
+        ['宅家时光', '🏠', '画一张理想房间或家的草图'],
+        ['宅家时光', '📝', '写下今年最想一起完成的十件小事'],
+        ['宅家时光', '📸', '在家拍一组有主题的情侣照片'],
+        ['一起吃饭', '🥟', '一起包饺子或馄饨'],
+        ['一起吃饭', '🍳', '只用家里现有食材做一顿创意晚餐'],
+        ['一起吃饭', '🍽️', '复刻第一次约会吃过的一样东西'],
+        ['一起吃饭', '🍰', '一个人做主食，另一个人做甜品'],
+        ['一起吃饭', '🌶️', '试一道从来没有吃过的地方菜'],
+        ['一起吃饭', '🍢', '去夜市，只吃对方帮你挑的小吃'],
+        ['一起吃饭', '🛒', '来一次固定预算的超市约会'],
+        ['一起吃饭', '🍪', '一起烤一盘饼干'],
+        ['一起吃饭', '🥞', '给对方准备一次懒人早餐'],
+        ['一起吃饭', '☕', '去咖啡店，互相替对方点饮品'],
+        ['一起吃饭', '🍲', '在家准备一顿双人小火锅'],
+        ['一起吃饭', '🍓', '拼一个爱心形状的水果盘'],
+        ['一起吃饭', '🥡', '盲选一份从来没点过的外卖'],
+        ['一起吃饭', '🍜', '各推荐一家小店，再猜拳决定去哪家'],
+        ['一起吃饭', '📒', '建一本“我们吃过的好东西”菜谱'],
+        ['出门走走', '🚶', '散步时故意不走熟悉的路线'],
+        ['出门走走', '🌇', '找个开阔的地方一起看日落'],
+        ['出门走走', '🧺', '带上简单零食去公园野餐'],
+        ['出门走走', '🚲', '骑单车慢慢逛一段没去过的路'],
+        ['出门走走', '🏛️', '去一次博物馆或小展览'],
+        ['出门走走', '📚', '逛书店，各给对方挑一本书'],
+        ['出门走走', '🎨', '出门寻找并拍下十种同色物品'],
+        ['出门走走', '🌿', '去植物园认识三种新植物'],
+        ['出门走走', '🍦', '晚饭后散步，再买一支冰淇淋'],
+        ['出门走走', '🚌', '随便坐上一辆公交，看沿途风景'],
+        ['出门走走', '🌃', '找一个附近好看的夜景点'],
+        ['出门走走', '🏸', '去公园打一场不计分的羽毛球'],
+        ['出门走走', '🐠', '去动物园或水族馆慢慢逛'],
+        ['出门走走', '💐', '逛花市，互相挑一支花'],
+        ['出门走走', '🧸', '逛旧物市场，给对方选个小东西'],
+        ['出门走走', '🥾', '挑一座轻松的小山一起走上去'],
+        ['出门走走', '☔', '下雨天共撑一把伞散步'],
+        ['出门走走', '🎬', '用猜拳决定今天看哪一部电影'],
+        ['出门走走', '🎤', '去唱一次歌，合唱一首情歌'],
+        ['出门走走', '🤝', '一起参加一次简单的公益活动'],
+        ['一起创造', '🏺', '一起体验一次陶艺或手工课'],
+        ['一起创造', '🎩', '各学一个简单魔术，再表演给对方看'],
+        ['一起创造', '🗣️', '学一句新语言里的“我喜欢你”'],
+        ['一起创造', '🖼️', '临摹同一幅画，看谁画得更像'],
+        ['一起创造', '📔', '做一页属于今天的情侣手账'],
+        ['一起创造', '✍️', '各写一首只有四句的小诗'],
+        ['一起创造', '🎬', '合作拍一段一分钟小短片'],
+        ['一起创造', '🖥️', '把喜欢的合照做成电子相册'],
+        ['一起创造', '🕰️', '做一个一年后再打开的时间胶囊'],
+        ['一起创造', '👩‍🍳', '一起学会一道新菜'],
+        ['一起创造', '🎧', '听一集有趣的播客，然后聊十分钟'],
+        ['一起创造', '🧠', '互相教对方一件自己擅长的小事'],
+        ['一起创造', '💟', '设计一个只属于你们的情侣标志'],
+        ['一起创造', '🩹', '一起学一项基础急救知识'],
+        ['一起创造', '🧱', '合作搭一个乐高或小模型'],
+        ['认真相处', '🗓️', '重新走一次第一次见面的路线'],
+        ['认真相处', '💌', '各写一封短信，当面读给对方听'],
+        ['认真相处', '🙏', '说出最近最感谢对方的三件事'],
+        ['认真相处', '❓', '轮流问五个以前没问过的问题'],
+        ['认真相处', '🧳', '一起规划下一次周末小旅行'],
+        ['认真相处', '🖼️', '翻旧照片，选出“年度最佳合照”'],
+        ['认真相处', '📮', '给一年后的彼此写一封信'],
+        ['认真相处', '🎁', '各准备一个不花钱的小惊喜'],
+        ['认真相处', '🎶', '关灯听完三首彼此喜欢的歌'],
+        ['认真相处', '🤗', '什么都不说，认真拥抱一分钟'],
+        ['认真相处', '⭐', '交换各自最近的三个小愿望'],
+        ['认真相处', '👑', '轮流设计一个“对方做主日”'],
+        ['认真相处', '💰', '一起定一个轻松可行的小存钱目标'],
+        ['认真相处', '🌌', '找个能看到天空的地方看星星'],
+        ['认真相处', '💬', '具体地夸对方五件事，不许只说可爱'],
+        ['小小冒险', '🎲', '用骰子决定今晚的活动顺序'],
+        ['小小冒险', '✊', '猜拳，输的人完成一个甜蜜小任务'],
+        ['小小冒险', '🗺️', '在地图附近随机选一个点去看看'],
+        ['小小冒险', '📷', '完成“同一天十张合照”挑战'],
+        ['小小冒险', '💵', '用很少的预算完成一次半日约会'],
+        ['小小冒险', '🧗', '一起尝试一种没玩过的运动'],
+        ['小小冒险', '🔐', '合作挑战一次密室逃脱'],
+        ['小小冒险', '🔥', '去露营，或者在家模拟一次露营'],
+        ['小小冒险', '🌅', '早起一次，一起看日出'],
+        ['小小冒险', '👟', '一起走完五公里，再奖励一顿好吃的'],
+        ['小小冒险', '🚆', '去附近一个没去过的小镇逛半天'],
+        ['小小冒险', '🎥', '拍一支只有你们会看的双人 Vlog'],
+        ['小小冒险', '🌱', '一起为陌生人做一件小小的好事'],
+        ['小小冒险', '🔄', '交换一天兴趣安排，认真体验对方的爱好'],
+        ['小小冒险', '✅', '从共同愿望清单里挑一件，今天就开始做']
       ];
 
       async function callLoveApi(action, payload = {}, token = sessionToken) {
@@ -1266,7 +1456,7 @@
           const newest = data.messages.at(-1);
           if (newest) localStorage.setItem(seenKey(), String(newest.id));
           unreadDot.classList.add('hidden');
-          if (!silent) composerStatus.textContent = '留言会同步到对方的手机';
+          if (!silent) composerStatus.textContent = 'Enter 发送 · Shift + Enter 换行';
         } catch (error) {
           if (error.status === 401) return leaveApp('登录已过期，请重新登录');
           if (!silent) {
@@ -1318,6 +1508,12 @@
       messageInput.addEventListener('input', () => {
         messageInput.style.height = 'auto';
         messageInput.style.height = `${Math.min(messageInput.scrollHeight, 108)}px`;
+      });
+
+      messageInput.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
+        event.preventDefault();
+        messageForm.requestSubmit();
       });
 
       function clearPendingImage() {
@@ -1610,6 +1806,66 @@
       }
 
       spinButton.addEventListener('click', spin);
+
+      const drawCard = document.querySelector('#draw-card');
+      const drawButton = document.querySelector('#draw-activity');
+      const drawAgainButton = document.querySelector('#draw-again');
+      const drawNumber = document.querySelector('#draw-number');
+      const drawCategory = document.querySelector('#draw-category');
+      const drawEmoji = document.querySelector('#draw-emoji');
+      const drawTitle = document.querySelector('#draw-title');
+      const drawCopy = document.querySelector('#draw-copy');
+      const drawCounter = document.querySelector('#draw-counter');
+      let activityBag = [];
+      let lastActivityIndex = -1;
+      let drawingActivity = false;
+
+      function refillActivityBag() {
+        activityBag = coupleActivities.map((_, index) => index);
+        for (let index = activityBag.length - 1; index > 0; index -= 1) {
+          const other = Math.floor(Math.random() * (index + 1));
+          [activityBag[index], activityBag[other]] = [activityBag[other], activityBag[index]];
+        }
+        if (activityBag.at(-1) === lastActivityIndex && activityBag.length > 1) {
+          [activityBag[0], activityBag[activityBag.length - 1]] = [activityBag.at(-1), activityBag[0]];
+        }
+      }
+
+      function drawActivity() {
+        if (drawingActivity) return;
+        if (!activityBag.length) refillActivityBag();
+        drawingActivity = true;
+        drawCard.classList.add('drawing');
+        drawButton.disabled = true;
+        drawAgainButton.disabled = true;
+        drawTitle.textContent = '正在从 100 支签里选一支…';
+        drawEmoji.textContent = '✨';
+
+        setTimeout(() => {
+          const activityIndex = activityBag.pop();
+          const [category, emoji, title] = coupleActivities[activityIndex];
+          lastActivityIndex = activityIndex;
+          drawNumber.textContent = `LOVE LOT · ${String(activityIndex + 1).padStart(3, '0')}`;
+          drawCategory.textContent = category;
+          drawEmoji.textContent = emoji;
+          drawTitle.textContent = title;
+          drawCopy.textContent = '这是一份小提议。如果两个人今天都不想做，就再抽一支。';
+          drawCounter.textContent = activityBag.length
+            ? `本轮还有 ${activityBag.length} 支不重复的签`
+            : '100 支签已经抽完，下次会重新洗牌';
+          drawButton.textContent = '再抽一支';
+          drawCard.classList.remove('drawing');
+          drawButton.disabled = false;
+          drawAgainButton.disabled = false;
+          drawingActivity = false;
+          showToast(`${emoji} 今天就做这个吧`);
+        }, 760);
+      }
+
+      document.querySelector('#to-draw').addEventListener('click', () => goTo(3));
+      document.querySelector('#draw-back').addEventListener('click', () => goTo(2));
+      drawButton.addEventListener('click', drawActivity);
+      drawAgainButton.addEventListener('click', drawActivity);
       initAuth();
     })();
   </script>
