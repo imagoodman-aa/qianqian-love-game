@@ -1,4 +1,4 @@
-.manual-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.manual-page { padding-top: calc(148rpx + env(safe-area-inset-top)); }
 .product-card { overflow: hidden; }
 .product-hero { padding: 35rpx 30rpx; display: flex; flex-direction: column; color: #fff; background: linear-gradient(135deg, #e84f71, #f58ca4); }
 .tag { align-self: flex-start; padding: 9rpx 14rpx; border-radius: 999rpx; background: rgba(255,255,255,.18); font-size: 18rpx; font-weight: 750; }

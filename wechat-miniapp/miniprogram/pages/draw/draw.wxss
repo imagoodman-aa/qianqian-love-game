@@ -1,4 +1,4 @@
-.draw-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.draw-page { padding-top: calc(148rpx + env(safe-area-inset-top)); }
 .draw-card { padding: 30rpx 32rpx 28rpx; display: flex; flex-direction: column; align-items: center; text-align: center; background: linear-gradient(160deg, #fff, #f7f1ff); }
 .draw-card.drawing .jar { animation: shake .12s infinite alternate; }
 .jar { position: relative; width: 150rpx; height: 137rpx; margin: 15rpx auto 25rpx; display: flex; align-items: flex-end; justify-content: center; border-radius: 20rpx 20rpx 52rpx 52rpx; color: #fff; background: linear-gradient(#ee7892, #c9365a); box-shadow: 0 15rpx 26rpx rgba(201,54,90,.22); }

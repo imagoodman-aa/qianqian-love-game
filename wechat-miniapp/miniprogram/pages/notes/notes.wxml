@@ -1,6 +1,6 @@
 <view class="notes-page">
   <view class="topbar notes-topbar">
-    <button class="topbar-brand" bindtap="back"><text class="topbar-heart">‹</text>返回</button>
+    <view class="topbar-brand" bindtap="back"><text class="topbar-heart">‹</text><text class="topbar-brand-label">返回</text></view>
     <view class="notes-title"><text>JUST FOR US</text><text class="notes-title-main">我们的留言板</text></view>
     <button class="topbar-action" bindtap="refresh">刷新</button>
   </view>

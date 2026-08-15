@@ -1,4 +1,4 @@
-.slot-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.slot-page { padding-top: calc(148rpx + env(safe-area-inset-top)); }
 .slot-card { padding: 28rpx; background: linear-gradient(155deg, #442f58, #281f32); border-color: rgba(255,255,255,.1); }
 .slot-top { display: flex; align-items: center; justify-content: space-between; color: #ffe9a3; font-size: 19rpx; font-weight: 850; letter-spacing: .08em; }
 .lights { color: #ffd76a; letter-spacing: .05em; }

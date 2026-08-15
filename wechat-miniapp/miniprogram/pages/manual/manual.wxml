@@ -1,6 +1,6 @@
 <view class="page-shell manual-page">
   <view class="topbar">
-    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <view class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text><text class="topbar-brand-label">返回首页</text></view>
     <button class="topbar-action" bindtap="openNotes">💌 留言</button>
   </view>
   <view class="eyebrow">专属模块 · 产品档案</view>

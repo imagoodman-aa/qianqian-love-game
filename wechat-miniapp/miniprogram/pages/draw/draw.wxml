@@ -1,6 +1,6 @@
 <view class="page-shell draw-page">
   <view class="topbar">
-    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <view class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text><text class="topbar-brand-label">返回首页</text></view>
     <button class="topbar-action" bindtap="openNotes">💌 留言</button>
   </view>
   <view class="eyebrow">抽签模块 · 今天做什么</view>

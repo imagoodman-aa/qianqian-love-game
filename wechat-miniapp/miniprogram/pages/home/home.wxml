@@ -1,6 +1,6 @@
 <view class="page-shell home-page">
   <view class="topbar">
-    <button class="topbar-brand"><text class="topbar-heart">♥</text>快乐补给站</button>
+    <view class="topbar-brand"><text class="topbar-heart">♥</text><text class="topbar-brand-label">快乐补给站</text></view>
     <view class="topbar-actions">
       <button class="topbar-action" bindtap="openNotes">💌 留言<view wx:if="{{hasUnread}}" class="unread-dot"></view></button>
       <button class="topbar-action" bindtap="logout">退出</button>

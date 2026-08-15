@@ -1,4 +1,4 @@
-.love-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.love-page { padding-top: calc(148rpx + env(safe-area-inset-top)); }
 .game-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; margin-bottom: 20rpx; }
 .stat { padding: 20rpx 22rpx; border-radius: 25rpx; background: #fff; border: 1rpx solid #f2dfe3; }
 .stat text { display: block; color: #876f76; font-size: 20rpx; }
