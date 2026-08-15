@@ -200,6 +200,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      padding: 0;
+      border: 0;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
       font-size: 13px;
       font-weight: 750;
       letter-spacing: .04em;
@@ -215,8 +220,6 @@
       background: var(--berry);
       box-shadow: 0 7px 16px rgba(232, 79, 113, .28);
     }
-
-    .progress { display: flex; gap: 7px; }
 
     .topbar-tools { display: flex; align-items: center; gap: 10px; }
 
@@ -263,16 +266,6 @@
 
     .unread-dot.hidden { display: none; }
 
-    .progress span {
-      width: 7px;
-      height: 7px;
-      border-radius: 10px;
-      background: #e9d8d9;
-      transition: width .35s ease, background .35s ease;
-    }
-
-    .progress span.active { width: 24px; background: var(--berry); }
-
     .screen {
       position: absolute;
       inset: 0;
@@ -294,6 +287,42 @@
       transform: translateX(0) scale(1);
       pointer-events: auto;
     }
+
+    .module-home-screen { justify-content: center; }
+    .module-home-copy { margin-bottom: 19px; }
+    .module-home-copy h1 { margin-bottom: 9px; }
+    .module-home-copy .subtitle { margin-bottom: 0; }
+    .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .module-card {
+      position: relative;
+      min-height: 166px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 17px;
+      overflow: hidden;
+      border: 1px solid rgba(111, 62, 74, .08);
+      border-radius: 25px;
+      color: var(--ink);
+      background: rgba(255, 253, 251, .9);
+      box-shadow: var(--soft-shadow);
+      cursor: pointer;
+      text-align: left;
+      touch-action: manipulation;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+
+    .module-card:active { transform: scale(.975); }
+    .module-card::after { content: ""; position: absolute; width: 95px; height: 95px; right: -39px; top: -36px; border-radius: 50%; background: var(--module-glow, #ffe2e9); }
+    .module-card:nth-child(2) { --module-glow: #fff0ba; }
+    .module-card:nth-child(3) { --module-glow: #e4f4ee; }
+    .module-card:nth-child(4) { --module-glow: #eee8ff; }
+    .module-emoji { position: relative; z-index: 1; margin-bottom: auto; font-size: 35px; }
+    .module-card small { margin-bottom: 4px; color: var(--berry); font-size: 9px; font-weight: 850; letter-spacing: .12em; }
+    .module-card strong { font-size: 16px; line-height: 1.3; }
+    .module-card p { margin: 6px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .module-home-button { margin-top: 12px; }
 
     .eyebrow {
       margin: 0 0 7px;
@@ -918,11 +947,8 @@
     <div class="blob two"></div>
 
     <header class="topbar">
-      <div class="brand"><span class="brand-mark">♥</span><span>快乐补给站</span></div>
+      <button class="brand" id="home-button" type="button" aria-label="返回四个模块首页"><span class="brand-mark">♥</span><span>快乐补给站</span></button>
       <div class="topbar-tools">
-        <div class="progress" aria-label="当前进度">
-          <span class="active"></span><span></span><span></span><span></span>
-        </div>
         <button class="notes-trigger" id="open-notes" type="button" aria-label="打开我们的留言板">
           💌 留言
           <i class="unread-dot hidden" id="unread-dot" aria-hidden="true"></i>
@@ -931,8 +957,31 @@
       </div>
     </header>
 
-    <section class="screen active" id="screen-love" data-step="0">
-      <p class="eyebrow">LEVEL 01 · 心动捕手</p>
+    <section class="screen module-home-screen active" id="screen-home">
+      <div class="module-home-copy">
+        <p class="eyebrow">OUR FOUR LITTLE THINGS</p>
+        <h1>今天想玩哪个？</h1>
+        <p class="subtitle">四个模块彼此独立，想玩什么就直接点什么。</p>
+      </div>
+      <div class="module-grid">
+        <button class="module-card" type="button" data-open-module="0">
+          <span class="module-emoji">💗</span><small>小游戏</small><strong>抓住我的爱</strong><p>十秒钟，看看能抓住多少喜欢。</p>
+        </button>
+        <button class="module-card" type="button" data-open-module="1">
+          <span class="module-emoji">📖</span><small>专属档案</small><strong>男朋友说明书</strong><p>查看功能、缺陷和终身售后。</p>
+        </button>
+        <button class="module-card" type="button" data-open-module="2">
+          <span class="module-emoji">🎰</span><small>今日好运</small><strong>芊芊的老虎机</strong><p>随机赢走奶茶、抱抱和惊喜。</p>
+        </button>
+        <button class="module-card" type="button" data-open-module="3">
+          <span class="module-emoji">🎴</span><small>100 支签</small><strong>情侣今日抽签</strong><p>不知道做什么时，把决定交给运气。</p>
+        </button>
+      </div>
+      <p class="footer-note">四个模块 · 随时进入 · 随时返回</p>
+    </section>
+
+    <section class="screen" id="screen-love" data-step="0">
+      <p class="eyebrow">小游戏 · 心动捕手</p>
       <h1>抓住我的爱</h1>
       <p class="subtitle">爱心会到处乱跑。抓住它们，看看我偷偷藏了多少喜欢。</p>
 
@@ -958,14 +1007,15 @@
           <div class="arena-icon">💞</div>
           <h3>喜欢超标啦！</h3>
           <p id="result-copy">经检测，你已经被我爱得无法逃脱。</p>
-          <button class="primary" id="to-manual" type="button">查看男朋友说明书 →</button>
+          <button class="primary" id="to-manual" type="button">返回四个模块</button>
         </div>
       </div>
+      <button class="secondary module-home-button" type="button" data-go-home>← 返回四个模块</button>
       <p class="footer-note">女朋友专属 · 本页面的爱意长期有效</p>
     </section>
 
     <section class="screen" id="screen-manual" data-step="1">
-      <p class="eyebrow">LEVEL 02 · 产品档案</p>
+      <p class="eyebrow">专属模块 · 产品档案</p>
       <h2>男朋友使用说明书</h2>
       <p class="subtitle">本产品仅限一人拥有，请认真阅读后再决定是否续费。</p>
 
@@ -999,14 +1049,14 @@
         <span>当前用户评价</span><span class="stars">★★★★★</span><strong>超级喜欢</strong>
       </div>
       <div class="manual-actions">
-        <button class="secondary" id="manual-back" type="button">返回看看</button>
+        <button class="secondary" id="manual-back" type="button">返回四个模块</button>
         <button class="primary" id="renew" type="button">续费一辈子 ♥</button>
       </div>
       <p class="footer-note">温馨提示：点击续费后不支持反悔</p>
     </section>
 
     <section class="screen" id="screen-slot" data-step="2">
-      <p class="eyebrow">LEVEL 03 · 今日好运</p>
+      <p class="eyebrow">幸运模块 · 今日好运</p>
       <h2>芊芊的老虎机</h2>
       <p class="subtitle">按下按钮，看看今天能从男朋友这里赢走什么。</p>
 
@@ -1023,7 +1073,6 @@
         <p class="slot-copy" id="slot-copy">幸运值已装满。点击开始，大奖马上送到！</p>
         <div class="slot-actions">
           <button class="primary" id="spin" type="button">开始哄我</button>
-          <button class="secondary" id="to-draw" type="button">情侣今日抽签 →</button>
         </div>
         <div class="ticket" id="ticket">
           <small>恭喜中奖</small>
@@ -1031,11 +1080,12 @@
           <p>兑奖口令：宝宝开心最重要 · 永不过期</p>
         </div>
       </div>
+      <button class="secondary module-home-button" id="slot-home" type="button">← 返回四个模块</button>
       <p class="footer-note">最终解释权归全世界最可爱的女朋友所有</p>
     </section>
 
     <section class="screen" id="screen-draw" data-step="3">
-      <p class="eyebrow">LEVEL 04 · 今天做什么</p>
+      <p class="eyebrow">抽签模块 · 今天做什么</p>
       <h2>情侣今日抽签</h2>
       <p class="subtitle">签筒里装着 100 件想和你一起做的事。犹豫的时候，就把决定交给运气。</p>
 
@@ -1055,7 +1105,7 @@
         <p class="draw-counter" id="draw-counter">本轮还有 100 支不重复的签</p>
       </div>
       <div class="draw-actions">
-        <button class="secondary" id="draw-back" type="button">← 返回</button>
+        <button class="secondary" id="draw-back" type="button">← 返回四个模块</button>
         <button class="primary" id="draw-again" type="button">换一个看看</button>
       </div>
       <p class="footer-note">抽到的不是命令，是今天相爱的一个小提议</p>
@@ -1097,7 +1147,6 @@
   <script>
     (() => {
       const screens = [...document.querySelectorAll('.screen')];
-      const dots = [...document.querySelectorAll('.progress span')];
       const arena = document.querySelector('#arena');
       const startLayer = document.querySelector('#arena-start');
       const resultLayer = document.querySelector('#arena-result');
@@ -1287,6 +1336,7 @@
 
       function enterApp(user) {
         signedInUser = user;
+        goTo('home');
         document.body.classList.add('authenticated');
         authScreen.classList.add('gone');
         authScreen.setAttribute('aria-hidden', 'true');
@@ -1661,9 +1711,19 @@
       });
 
       function goTo(step) {
-        screens.forEach((screen, index) => screen.classList.toggle('active', index === step));
-        dots.forEach((dot, index) => dot.classList.toggle('active', index === step));
-        screens[step].scrollTop = 0;
+        const target = step === 'home'
+          ? document.querySelector('#screen-home')
+          : document.querySelector(`[data-step="${step}"]`);
+        if (!target) return;
+        screens.forEach(screen => screen.classList.toggle('active', screen === target));
+        target.scrollTop = 0;
+      }
+
+      function showModuleHome() {
+        resetLoveGame();
+        clearTimeout(toastTimer);
+        toast.classList.remove('show');
+        goTo('home');
       }
 
       function showToast(text) {
@@ -1730,12 +1790,24 @@
         }, 1000);
       }
 
+      function resetLoveGame() {
+        playing = false;
+        clearInterval(gameTimer);
+        clearInterval(spawnTimer);
+        arena.querySelectorAll('.heart').forEach(heart => heart.remove());
+        timeLeft = 10;
+        score = 0;
+        timeEl.textContent = timeLeft;
+        scoreEl.textContent = score;
+        startLayer.classList.remove('hidden');
+        resultLayer.classList.add('hidden');
+      }
+
       document.querySelector('#start-love').addEventListener('click', startGame);
-      document.querySelector('#to-manual').addEventListener('click', () => goTo(1));
-      document.querySelector('#manual-back').addEventListener('click', () => goTo(0));
+      document.querySelector('#to-manual').addEventListener('click', showModuleHome);
+      document.querySelector('#manual-back').addEventListener('click', showModuleHome);
       document.querySelector('#renew').addEventListener('click', () => {
         showToast('续费成功！有效期：一辈子 ♥');
-        setTimeout(() => goTo(2), 900);
       });
 
       const reels = [...document.querySelectorAll('.reel')];
@@ -1862,8 +1934,17 @@
         }, 760);
       }
 
-      document.querySelector('#to-draw').addEventListener('click', () => goTo(3));
-      document.querySelector('#draw-back').addEventListener('click', () => goTo(2));
+      document.querySelector('#draw-back').addEventListener('click', showModuleHome);
+      document.querySelector('#slot-home').addEventListener('click', showModuleHome);
+      document.querySelector('#home-button').addEventListener('click', showModuleHome);
+      document.querySelectorAll('[data-go-home]').forEach(button => button.addEventListener('click', showModuleHome));
+      document.querySelectorAll('[data-open-module]').forEach(button => {
+        button.addEventListener('click', () => {
+          const moduleIndex = Number(button.dataset.openModule);
+          if (moduleIndex === 0) resetLoveGame();
+          goTo(moduleIndex);
+        });
+      });
       drawButton.addEventListener('click', drawActivity);
       drawAgainButton.addEventListener('click', drawActivity);
       initAuth();
