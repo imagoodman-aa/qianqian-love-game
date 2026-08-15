@@ -17,11 +17,11 @@
 .read-state { color: #d34d6d; font-weight: 750; }
 .bottom-anchor { height: 35rpx; }
 .composer { flex: none; padding: 14rpx 22rpx calc(14rpx + env(safe-area-inset-bottom)); border-top: 1rpx solid #f0dbe0; background: rgba(255,255,255,.96); }
-.composer-row { display: flex; align-items: flex-end; gap: 11rpx; }
-.image-button, .send-button { flex: none; width: 78rpx; height: 78rpx; min-height: 78rpx; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 23rpx; line-height: 1; }
-.image-button { color: #e84f71; background: #fff1f4; font-size: 35rpx; }
-.send-button { color: #fff; background: linear-gradient(135deg, #e84f71, #f27d97); font-size: 37rpx; font-weight: 850; }
-.message-input { flex: 1; min-height: 78rpx; max-height: 190rpx; padding: 19rpx 21rpx; box-sizing: border-box; border: 1rpx solid #eed6dc; border-radius: 23rpx; background: #fff; font-size: 26rpx; line-height: 1.45; }
+.composer-row { display: flex; align-items: flex-end; gap: 10rpx; }
+.image-button, .send-button { flex: none; width: 64rpx; height: 64rpx; min-height: 64rpx; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 19rpx; line-height: 1; }
+.image-button { color: #e84f71; background: #fff1f4; font-size: 29rpx; }
+.send-button { color: #fff; background: linear-gradient(135deg, #e84f71, #f27d97); font-size: 30rpx; font-weight: 850; }
+.message-input { flex: 1; min-height: 96rpx; max-height: 220rpx; padding: 22rpx 22rpx; box-sizing: border-box; border: 1rpx solid #eed6dc; border-radius: 21rpx; background: #fff; font-size: 27rpx; line-height: 1.45; }
 .preview-row { margin-bottom: 10rpx; padding: 10rpx; display: flex; align-items: center; gap: 12rpx; border-radius: 18rpx; background: #fff2f5; }
 .preview-row image { width: 72rpx; height: 72rpx; border-radius: 14rpx; }
 .preview-row text { flex: 1; color: #755e65; font-size: 21rpx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
