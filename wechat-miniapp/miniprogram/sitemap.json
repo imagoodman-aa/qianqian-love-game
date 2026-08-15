@@ -1,0 +1,4 @@
+{
+  "desc": "仅供两位体验成员使用",
+  "rules": [{ "action": "disallow", "page": "*" }]
+}

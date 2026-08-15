@@ -1,0 +1,16 @@
+.love-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.game-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; margin-bottom: 20rpx; }
+.stat { padding: 20rpx 22rpx; border-radius: 25rpx; background: #fff; border: 1rpx solid #f2dfe3; }
+.stat text { display: block; color: #876f76; font-size: 20rpx; }
+.stat view { margin-top: 5rpx; color: #c9365a; font-size: 24rpx; font-weight: 700; }
+.stat-number { font-size: 42rpx; font-weight: 850; }
+.arena { position: relative; height: 650rpx; overflow: hidden; background: radial-gradient(circle at center, #fff 20%, #fff1f4 100%); }
+.heart { position: absolute; z-index: 4; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,.88); box-shadow: 0 9rpx 20rpx rgba(232,79,113,.18); font-size: 46rpx; line-height: 1; animation: pop .18s ease-out; }
+.heart.special { background: #fff5c9; box-shadow: 0 9rpx 24rpx rgba(208,164,45,.26); }
+.arena-layer { position: absolute; z-index: 8; inset: 0; padding: 50rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: rgba(255,255,255,.88); }
+.arena-icon { font-size: 88rpx; }
+.arena-title { margin-top: 15rpx; font-size: 38rpx; font-weight: 900; }
+.arena-copy { margin-top: 15rpx; color: #876f76; font-size: 24rpx; line-height: 1.7; white-space: pre-line; }
+.arena-button { width: 78%; margin-top: 30rpx; }
+.home-button { margin-top: 20rpx; }
+@keyframes pop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }

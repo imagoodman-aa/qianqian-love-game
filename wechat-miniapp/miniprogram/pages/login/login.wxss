@@ -1,0 +1,20 @@
+.auth-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: calc(90rpx + env(safe-area-inset-top)) 34rpx calc(50rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(255, 201, 216, .75), transparent 32%),
+    radial-gradient(circle at 5% 90%, rgba(255, 225, 139, .38), transparent 28%),
+    #fff8f5;
+}
+.auth-card { width: 100%; padding: 46rpx 38rpx 38rpx; }
+.auth-mark { width: 82rpx; height: 82rpx; margin-bottom: 28rpx; display: flex; align-items: center; justify-content: center; border-radius: 28rpx; color: #fff; background: linear-gradient(135deg, #e84f71, #ff95aa); box-shadow: 0 15rpx 30rpx rgba(232,79,113,.23); font-size: 45rpx; }
+.auth-title { font-size: 58rpx; font-weight: 900; line-height: 1.15; letter-spacing: -.04em; white-space: pre-line; }
+.field { margin-top: 20rpx; }
+.field text { display: block; margin: 0 0 10rpx 8rpx; color: #755d64; font-size: 23rpx; font-weight: 750; }
+.field input { height: 92rpx; padding: 0 26rpx; border: 1rpx solid #f0d9df; border-radius: 24rpx; background: #fff; font-size: 28rpx; }
+.auth-submit { margin-top: 28rpx; }
+.auth-message { min-height: 34rpx; margin-top: 18rpx; color: #c9365a; font-size: 23rpx; text-align: center; }
+.auth-foot { margin-top: 28rpx; color: #a98d95; font-size: 20rpx; text-align: center; }

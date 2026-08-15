@@ -1,0 +1,13 @@
+.home-page { padding-top: calc(125rpx + env(safe-area-inset-top)); }
+.home-copy { margin-bottom: 28rpx; }
+.module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18rpx; }
+.module-card { min-height: 285rpx; margin: 0; padding: 27rpx 24rpx; display: flex; flex-direction: column; align-items: flex-start; text-align: left; border-radius: 31rpx; border: 1rpx solid rgba(232,79,113,.12); box-shadow: 0 15rpx 38rpx rgba(95,55,65,.07); overflow: hidden; }
+.module-card.love { background: linear-gradient(145deg, #fff, #ffe9ef); }
+.module-card.manual { background: linear-gradient(145deg, #fff, #fff4cf); }
+.module-card.slot { background: linear-gradient(145deg, #fff, #e9f7f1); }
+.module-card.draw { background: linear-gradient(145deg, #fff, #f0ebff); }
+.module-emoji { font-size: 53rpx; line-height: 1; margin-bottom: 18rpx; }
+.module-label { color: #e84f71; font-size: 18rpx; font-weight: 850; letter-spacing: .12em; }
+.module-title { margin-top: 8rpx; font-size: 31rpx; font-weight: 850; line-height: 1.25; }
+.module-copy { margin-top: 12rpx; color: #876f76; font-size: 21rpx; line-height: 1.5; }
+.welcome { margin-top: 31rpx; color: #a88d95; font-size: 21rpx; text-align: center; }

@@ -1,0 +1,20 @@
+.slot-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.slot-card { padding: 28rpx; background: linear-gradient(155deg, #442f58, #281f32); border-color: rgba(255,255,255,.1); }
+.slot-top { display: flex; align-items: center; justify-content: space-between; color: #ffe9a3; font-size: 19rpx; font-weight: 850; letter-spacing: .08em; }
+.lights { color: #ffd76a; letter-spacing: .05em; }
+.reels { margin-top: 25rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10rpx; }
+.reel { height: 185rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 5rpx solid #f3c454; border-radius: 23rpx; background: linear-gradient(#fff, #fff5d8); overflow: hidden; }
+.reel.spinning { animation: shake .12s infinite alternate; }
+.reel-emoji { font-size: 66rpx; line-height: 1; }
+.reel-name { margin-top: 12rpx; color: #3d3042; font-size: 22rpx; font-weight: 850; }
+.slot-copy { min-height: 70rpx; margin: 25rpx 0 18rpx; color: #e7dbe8; font-size: 23rpx; line-height: 1.55; text-align: center; }
+.spin-button { width: 100%; }
+.ticket { margin-top: 22rpx; padding: 24rpx; display: flex; flex-direction: column; align-items: center; border: 2rpx dashed #e3b94c; border-radius: 22rpx; color: #382a3c; background: #fff4c9; animation: ticket .35s ease-out; }
+.ticket-small { color: #a87813; font-size: 18rpx; font-weight: 800; letter-spacing: .15em; }
+.ticket-prize { margin-top: 8rpx; font-size: 32rpx; font-weight: 900; text-align: center; }
+.ticket-copy { margin-top: 9rpx; color: #846f50; font-size: 19rpx; }
+.home-button { margin-top: 20rpx; }
+.celebrate { position: fixed; z-index: 90; top: 24%; left: 0; right: 0; font-size: 55rpx; letter-spacing: .12em; text-align: center; animation: celebrate 1.8s both; pointer-events: none; }
+@keyframes shake { from { transform: translateY(-5rpx); } to { transform: translateY(5rpx); } }
+@keyframes ticket { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes celebrate { 0% { transform: translateY(-100rpx) scale(.5); opacity: 0; } 30% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(200rpx) rotate(12deg); opacity: 0; } }

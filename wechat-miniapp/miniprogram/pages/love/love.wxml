@@ -1,0 +1,33 @@
+<view class="page-shell love-page">
+  <view class="topbar">
+    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+
+  <view class="eyebrow">小游戏 · 心动捕手</view>
+  <view class="page-title small">抓住我的爱</view>
+  <view class="subtitle">爱心会到处乱跑。抓住它们，看看我偷偷藏了多少喜欢。</view>
+
+  <view class="game-meta">
+    <view class="stat"><text>剩余时间</text><view><text class="stat-number">{{timeLeft}}</text> 秒</view></view>
+    <view class="stat"><text>收集爱意</text><view><text class="stat-number">{{score}}</text> 点</view></view>
+  </view>
+
+  <view class="arena card">
+    <button wx:for="{{hearts}}" wx:key="id" class="heart {{item.special ? 'special' : ''}}" style="left:{{item.left}}%;top:{{item.top}}%;width:{{item.size}}rpx;height:{{item.size}}rpx" data-id="{{item.id}}" bindtap="catchHeart">{{item.emoji}}</button>
+
+    <view wx:if="{{state === 'ready'}}" class="arena-layer">
+      <view class="arena-icon">💗</view><view class="arena-title">准备好了吗？</view>
+      <view class="arena-copy">普通爱心 +1，金色爱心 +5\n限时 10 秒，手速要快哦</view>
+      <button class="primary arena-button" bindtap="startGame">开始抓爱心</button>
+    </view>
+
+    <view wx:if="{{state === 'done'}}" class="arena-layer">
+      <view class="arena-icon">💞</view><view class="arena-title">喜欢超标啦！</view>
+      <view class="arena-copy">你一共抓到 {{score}} 点爱意。\n经检测，你已经被我爱得无法逃脱。</view>
+      <button class="primary arena-button" bindtap="startGame">再玩一次</button>
+    </view>
+  </view>
+  <button class="secondary home-button" bindtap="goHome">← 返回四个模块</button>
+  <view wx:if="{{toast}}" class="toast">{{toast}}</view>
+</view>

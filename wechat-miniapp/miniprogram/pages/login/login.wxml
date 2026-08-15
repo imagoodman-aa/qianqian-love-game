@@ -1,0 +1,21 @@
+<view class="auth-page">
+  <view class="auth-card card">
+    <view class="auth-mark">♥</view>
+    <view class="eyebrow">OUR LITTLE WORLD</view>
+    <view class="auth-title">欢迎回到\n我们的小世界</view>
+    <view class="subtitle">这里有小游戏，也有只属于我们两个人的留言。</view>
+
+    <view class="field">
+      <text>用户名</text>
+      <input value="{{username}}" placeholder="输入用户名" maxlength="30" bindinput="onUsername" confirm-type="next" />
+    </view>
+    <view class="field">
+      <text>密码</text>
+      <input value="{{password}}" password placeholder="输入密码" maxlength="40" bindinput="onPassword" bindconfirm="login" confirm-type="done" />
+    </view>
+
+    <button class="primary auth-submit" loading="{{loading}}" disabled="{{loading}}" bindtap="login">{{loading ? '正在进入…' : '进入快乐补给站'}}</button>
+    <view wx:if="{{message}}" class="auth-message">{{message}}</view>
+    <view class="auth-foot">仅限 James 与芊芊进入 · 登录状态保留 30 天</view>
+  </view>
+</view>

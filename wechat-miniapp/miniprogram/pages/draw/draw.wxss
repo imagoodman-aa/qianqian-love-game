@@ -1,0 +1,14 @@
+.draw-page { padding-top: calc(106rpx + env(safe-area-inset-top)); }
+.draw-card { padding: 30rpx 32rpx 28rpx; display: flex; flex-direction: column; align-items: center; text-align: center; background: linear-gradient(160deg, #fff, #f7f1ff); }
+.draw-card.drawing .jar { animation: shake .12s infinite alternate; }
+.jar { position: relative; width: 150rpx; height: 137rpx; margin: 15rpx auto 25rpx; display: flex; align-items: flex-end; justify-content: center; border-radius: 20rpx 20rpx 52rpx 52rpx; color: #fff; background: linear-gradient(#ee7892, #c9365a); box-shadow: 0 15rpx 26rpx rgba(201,54,90,.22); }
+.sticks { position: absolute; top: -34rpx; color: #a7773e; font-size: 58rpx; letter-spacing: -10rpx; }
+.jar-heart { margin-bottom: 28rpx; font-size: 48rpx; }
+.draw-number { color: #9f86b6; font-size: 18rpx; font-weight: 850; letter-spacing: .14em; }
+.draw-category { margin-top: 13rpx; padding: 8rpx 17rpx; border-radius: 999rpx; color: #795a95; background: #eee4fa; font-size: 19rpx; font-weight: 750; }
+.draw-emoji { margin-top: 17rpx; font-size: 77rpx; line-height: 1.1; }
+.draw-title { margin-top: 12rpx; font-size: 34rpx; font-weight: 900; line-height: 1.35; }
+.draw-copy { min-height: 65rpx; margin-top: 13rpx; color: #876f76; font-size: 22rpx; line-height: 1.55; }
+.draw-button { width: 100%; margin-top: 25rpx; }
+.draw-counter { margin-top: 17rpx; color: #9d859e; font-size: 20rpx; }
+@keyframes shake { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }

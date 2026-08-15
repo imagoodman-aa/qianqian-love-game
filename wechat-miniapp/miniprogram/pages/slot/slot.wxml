@@ -1,0 +1,26 @@
+<view class="page-shell slot-page">
+  <view class="topbar">
+    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+  <view class="eyebrow">幸运模块 · 今日好运</view>
+  <view class="page-title small">芊芊的老虎机</view>
+  <view class="subtitle">按下按钮，看看今天能从男朋友这里赢走什么。</view>
+
+  <view class="card slot-card">
+    <view class="slot-top"><text>LUCKY GIRL 777</text><text class="lights">● ● ● ● ●</text></view>
+    <view class="reels">
+      <view wx:for="{{reels}}" wx:key="index" class="reel {{spinning ? 'spinning' : ''}}">
+        <text class="reel-emoji">{{item.emoji}}</text><text class="reel-name">{{item.name}}</text>
+      </view>
+    </view>
+    <view class="slot-copy">{{copy}}</view>
+    <button class="primary spin-button" loading="{{spinning}}" disabled="{{spinning}}" bindtap="spin">{{spinning ? '正在开奖…' : buttonText}}</button>
+    <view wx:if="{{ticket}}" class="ticket">
+      <text class="ticket-small">恭喜中奖</text><text class="ticket-prize">{{ticket}}</text><text class="ticket-copy">兑奖口令：宝宝开心最重要 · 永不过期</text>
+    </view>
+  </view>
+  <button class="secondary home-button" bindtap="goHome">← 返回四个模块</button>
+  <view class="footer-note">最终解释权归全世界最可爱的女朋友所有</view>
+  <view wx:if="{{celebrating}}" class="celebrate">🎉 ✨ 💗 🎊 ⭐️</view>
+</view>

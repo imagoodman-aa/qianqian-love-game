@@ -1,0 +1,37 @@
+<view class="notes-page">
+  <view class="topbar notes-topbar">
+    <button class="topbar-brand" bindtap="back"><text class="topbar-heart">‹</text>返回</button>
+    <view class="notes-title"><text>JUST FOR US</text><text class="notes-title-main">我们的留言板</text></view>
+    <button class="topbar-action" bindtap="refresh">刷新</button>
+  </view>
+
+  <scroll-view class="message-list" scroll-y enable-back-to-top scroll-with-animation scroll-into-view="{{scrollToId}}">
+    <view wx:if="{{loading}}" class="empty">正在加载我们的悄悄话…</view>
+    <view wx:elif="{{!messages.length}}" class="empty">还没有留言。\n先写下第一句悄悄话吧 💌</view>
+    <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}" class="message-row {{item.mine ? 'mine' : ''}}">
+      <text class="author">{{item.mine ? '我' : item.displayName}}</text>
+      <view class="bubble {{item.type === 'image' ? 'image-bubble' : ''}}">
+        <image wx:if="{{item.type === 'image' && item.imageUrl}}" class="message-image" src="{{item.imageUrl}}" mode="widthFix" data-url="{{item.imageUrl}}" bindtap="previewMessageImage" />
+        <text wx:if="{{item.type === 'image' && item.content && item.content !== '图片'}}" class="caption">{{item.content}}</text>
+        <text wx:if="{{item.type !== 'image'}}">{{item.content}}</text>
+      </view>
+      <view class="meta"><text>{{item.displayTime}}</text><text wx:if="{{item.mine}}" class="read-state">{{item.readAt ? '已读' : '已送达'}}</text></view>
+    </view>
+    <view id="message-bottom" class="bottom-anchor"></view>
+  </scroll-view>
+
+  <view class="composer">
+    <view wx:if="{{pendingImage}}" class="preview-row">
+      <image src="{{pendingImage.path}}" mode="aspectFill" />
+      <text>{{pendingImage.name}}</text>
+      <button bindtap="removeImage">×</button>
+    </view>
+    <view class="composer-row">
+      <button class="image-button" disabled="{{sending}}" bindtap="chooseImage">📷</button>
+      <textarea class="message-input" value="{{content}}" maxlength="500" auto-height fixed placeholder="{{pendingImage ? '给图片写一句话（可选）' : '写一句想对 TA 说的话…'}}" confirm-type="send" confirm-hold bindinput="onContent" bindconfirm="send" />
+      <button class="send-button" disabled="{{sending}}" loading="{{sending}}" bindtap="send">↑</button>
+    </view>
+    <view class="status">{{status}}</view>
+    <view class="notes-footer"><text>当前用户：<text class="current-user">{{displayName}}</text></text><button bindtap="logout">退出登录</button></view>
+  </view>
+</view>

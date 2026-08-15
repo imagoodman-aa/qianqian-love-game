@@ -1,0 +1,32 @@
+<view class="page-shell home-page">
+  <view class="topbar">
+    <button class="topbar-brand"><text class="topbar-heart">♥</text>快乐补给站</button>
+    <view class="topbar-actions">
+      <button class="topbar-action" bindtap="openNotes">💌 留言<view wx:if="{{hasUnread}}" class="unread-dot"></view></button>
+      <button class="topbar-action" bindtap="logout">退出</button>
+    </view>
+  </view>
+
+  <view class="home-copy">
+    <view class="eyebrow">OUR FOUR LITTLE THINGS</view>
+    <view class="page-title">今天想玩哪个？</view>
+    <view class="subtitle">四个模块彼此独立，想玩什么就直接点什么。</view>
+  </view>
+
+  <view class="module-grid">
+    <button class="module-card love" data-url="/pages/love/love" bindtap="openModule">
+      <text class="module-emoji">💗</text><text class="module-label">小游戏</text><text class="module-title">抓住我的爱</text><text class="module-copy">十秒钟，看看能抓住多少喜欢。</text>
+    </button>
+    <button class="module-card manual" data-url="/pages/manual/manual" bindtap="openModule">
+      <text class="module-emoji">📖</text><text class="module-label">专属档案</text><text class="module-title">男朋友说明书</text><text class="module-copy">查看功能、缺陷和终身售后。</text>
+    </button>
+    <button class="module-card slot" data-url="/pages/slot/slot" bindtap="openModule">
+      <text class="module-emoji">🎰</text><text class="module-label">今日好运</text><text class="module-title">芊芊的老虎机</text><text class="module-copy">随机赢走奶茶、抱抱和惊喜。</text>
+    </button>
+    <button class="module-card draw" data-url="/pages/draw/draw" bindtap="openModule">
+      <text class="module-emoji">🎴</text><text class="module-label">100 支签</text><text class="module-title">情侣今日抽签</text><text class="module-copy">不知道做什么时，把决定交给运气。</text>
+    </button>
+  </view>
+
+  <view class="welcome">当前用户：{{displayName}} · 四个模块随时进入</view>
+</view>

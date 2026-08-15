@@ -1,0 +1,23 @@
+<view class="page-shell draw-page">
+  <view class="topbar">
+    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+  <view class="eyebrow">抽签模块 · 今天做什么</view>
+  <view class="page-title small">情侣今日抽签</view>
+  <view class="subtitle">签筒里装着 100 件想和你一起做的事。犹豫的时候，就把决定交给运气。</view>
+
+  <view class="card draw-card {{drawing ? 'drawing' : ''}}">
+    <view class="jar"><text class="sticks">╲│╱│</text><text class="jar-heart">♥</text></view>
+    <text class="draw-number">{{number}}</text>
+    <text class="draw-category">{{category}}</text>
+    <text class="draw-emoji">{{emoji}}</text>
+    <text class="draw-title">{{title}}</text>
+    <text class="draw-copy">{{copy}}</text>
+    <button class="primary draw-button" loading="{{drawing}}" disabled="{{drawing}}" bindtap="draw">{{buttonText}}</button>
+    <text class="draw-counter">{{counter}}</text>
+  </view>
+  <view class="two-actions"><button class="secondary" bindtap="goHome">← 返回首页</button><button class="primary" disabled="{{drawing}}" bindtap="draw">换一个看看</button></view>
+  <view class="footer-note">抽到的不是命令，是今天相爱的一个小提议</view>
+  <view wx:if="{{toast}}" class="toast">{{toast}}</view>
+</view>

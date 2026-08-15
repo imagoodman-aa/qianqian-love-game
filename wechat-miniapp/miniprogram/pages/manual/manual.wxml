@@ -1,0 +1,25 @@
+<view class="page-shell manual-page">
+  <view class="topbar">
+    <button class="topbar-brand" bindtap="goHome"><text class="topbar-heart">♥</text>返回首页</button>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+  <view class="eyebrow">专属模块 · 产品档案</view>
+  <view class="page-title small">男朋友使用说明书</view>
+  <view class="subtitle">本产品仅限一人拥有，请认真阅读后再决定是否续费。</view>
+
+  <view class="card product-card">
+    <view class="product-hero">
+      <text class="tag">女朋友专属款 · 不对外出售</text>
+      <text class="product-name">专属笨蛋男朋友</text>
+      <text class="serial">型号：BF-FOREVER · 已激活</text>
+    </view>
+    <view class="manual-row" wx:for="{{items}}" wx:key="title">
+      <text class="manual-icon">{{item.emoji}}</text>
+      <view><text class="manual-title">{{item.title}}</text><text class="manual-copy">{{item.copy}}</text></view>
+    </view>
+  </view>
+  <view class="rating"><text>当前用户评价</text><text class="stars">★★★★★</text><text class="rating-word">超级喜欢</text></view>
+  <view class="two-actions"><button class="secondary" bindtap="goHome">返回首页</button><button class="primary" bindtap="renew">续费一辈子 ♥</button></view>
+  <view class="footer-note">温馨提示：点击续费后不支持反悔</view>
+  <view wx:if="{{toast}}" class="toast">{{toast}}</view>
+</view>
