@@ -743,7 +743,11 @@
       background: linear-gradient(135deg, #ef6885, #d94266);
     }
 
-    .message-time { margin: 5px 8px 0; color: #b0959b; font-size: 8px; }
+    .message-bubble.has-image { width: min(78%, 290px); padding: 4px; overflow: hidden; }
+    .message-image { display: block; width: 100%; max-height: 360px; border-radius: 15px; object-fit: cover; }
+    .image-caption { display: block; padding: 7px 9px 8px; white-space: pre-wrap; word-break: break-word; }
+    .message-meta { display: flex; align-items: center; gap: 6px; margin: 5px 8px 0; color: #b0959b; font-size: 8px; }
+    .message-read { color: #d05a78; font-weight: 750; }
 
     .message-composer {
       padding: 12px 14px 10px;
@@ -751,7 +755,33 @@
       background: rgba(255,253,251,.94);
     }
 
-    .composer-row { display: grid; grid-template-columns: 1fr auto; gap: 9px; align-items: end; }
+    .image-preview {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 9px;
+      padding: 7px 9px;
+      border-radius: 15px;
+      background: #f8ecee;
+    }
+
+    .image-preview[hidden] { display: none; }
+    .image-preview img { width: 46px; height: 46px; border-radius: 11px; object-fit: cover; }
+    .image-preview span { flex: 1; min-width: 0; overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .remove-image { width: 30px; height: 30px; border: 0; border-radius: 10px; color: var(--berry-dark); background: white; cursor: pointer; font-size: 17px; }
+    .composer-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: end; }
+    .image-picker {
+      width: 48px;
+      height: 48px;
+      border: 1px solid #eadbdd;
+      border-radius: 16px;
+      color: var(--berry-dark);
+      background: #fff4f6;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .image-picker:disabled { opacity: .5; cursor: default; }
     .message-composer textarea {
       width: 100%;
       min-height: 48px;
@@ -957,8 +987,15 @@
         <div class="messages-loading">正在加载我们的悄悄话…</div>
       </div>
       <form class="message-composer" id="message-form">
+        <div class="image-preview" id="image-preview" hidden>
+          <img id="image-preview-thumb" alt="待发送图片预览">
+          <span id="image-preview-name">已选择图片</span>
+          <button class="remove-image" id="remove-image" type="button" aria-label="移除图片">×</button>
+        </div>
         <div class="composer-row">
-          <textarea id="message-input" maxlength="500" rows="1" placeholder="写一句想对 TA 说的话…" aria-label="留言内容" required></textarea>
+          <button class="image-picker" id="image-picker" type="button" aria-label="选择图片">📷</button>
+          <input id="image-input" type="file" accept="image/*" hidden>
+          <textarea id="message-input" maxlength="500" rows="1" placeholder="写一句想对 TA 说的话…" aria-label="留言内容"></textarea>
           <button class="primary send-message" id="send-message" type="submit" aria-label="发送留言">↑</button>
         </div>
         <p class="composer-status" id="composer-status" aria-live="polite">留言会同步到对方的手机</p>
@@ -993,6 +1030,12 @@
       const messageForm = document.querySelector('#message-form');
       const messageInput = document.querySelector('#message-input');
       const sendMessageButton = document.querySelector('#send-message');
+      const imagePicker = document.querySelector('#image-picker');
+      const imageInput = document.querySelector('#image-input');
+      const imagePreview = document.querySelector('#image-preview');
+      const imagePreviewThumb = document.querySelector('#image-preview-thumb');
+      const imagePreviewName = document.querySelector('#image-preview-name');
+      const removeImageButton = document.querySelector('#remove-image');
       const composerStatus = document.querySelector('#composer-status');
       const currentUserEl = document.querySelector('#current-user');
       const unreadDot = document.querySelector('#unread-dot');
@@ -1003,6 +1046,7 @@
       let unreadPollTimer = null;
       let sessionToken = localStorage.getItem(SESSION_KEY) || '';
       let signedInUser = null;
+      let pendingImage = null;
       let timeLeft = 10;
       let score = 0;
       let playing = false;
@@ -1076,6 +1120,7 @@
         loginPassword.value = '';
         loginSubmit.disabled = false;
         loginSubmit.textContent = '进入快乐补给站';
+        clearPendingImage();
         setTimeout(() => loginUsername.focus(), 350);
       }
 
@@ -1149,16 +1194,54 @@
           const row = document.createElement('article');
           const author = document.createElement('div');
           const bubble = document.createElement('div');
+          const meta = document.createElement('div');
           const time = document.createElement('time');
           row.className = `message-row${message.mine ? ' mine' : ''}`;
           author.className = 'message-author';
           bubble.className = 'message-bubble';
-          time.className = 'message-time';
+          meta.className = 'message-meta';
           author.textContent = message.mine ? '我' : message.displayName;
-          bubble.textContent = message.content;
+
+          if (message.type === 'image') {
+            bubble.classList.add('has-image');
+            if (message.imageUrl) {
+              const imageLink = document.createElement('a');
+              const image = document.createElement('img');
+              imageLink.href = message.imageUrl;
+              imageLink.target = '_blank';
+              imageLink.rel = 'noopener';
+              image.src = message.imageUrl;
+              image.alt = `${message.displayName} 上传的图片`;
+              image.loading = 'lazy';
+              image.className = 'message-image';
+              imageLink.appendChild(image);
+              bubble.appendChild(imageLink);
+            } else {
+              const unavailable = document.createElement('span');
+              unavailable.className = 'image-caption';
+              unavailable.textContent = '图片暂时加载失败';
+              bubble.appendChild(unavailable);
+            }
+            if (message.content && message.content !== '图片') {
+              const caption = document.createElement('span');
+              caption.className = 'image-caption';
+              caption.textContent = message.content;
+              bubble.appendChild(caption);
+            }
+          } else {
+            bubble.textContent = message.content;
+          }
+
           time.dateTime = message.createdAt;
           time.textContent = formatMessageTime(message.createdAt);
-          row.append(author, bubble, time);
+          meta.appendChild(time);
+          if (message.mine) {
+            const readState = document.createElement('span');
+            readState.className = 'message-read';
+            readState.textContent = message.readAt ? '已读' : '已送达';
+            meta.appendChild(readState);
+          }
+          row.append(author, bubble, meta);
           messageList.appendChild(row);
         });
 
@@ -1178,12 +1261,12 @@
           messageList.innerHTML = '<div class="messages-loading">正在加载我们的悄悄话…</div>';
         }
         try {
-          const data = await callLoveApi('list');
+          const data = await callLoveApi('list', { markRead: true });
           renderMessages(data.messages);
           const newest = data.messages.at(-1);
           if (newest) localStorage.setItem(seenKey(), String(newest.id));
           unreadDot.classList.add('hidden');
-          composerStatus.textContent = '留言会同步到对方的手机';
+          if (!silent) composerStatus.textContent = '留言会同步到对方的手机';
         } catch (error) {
           if (error.status === 401) return leaveApp('登录已过期，请重新登录');
           if (!silent) {
@@ -1237,23 +1320,133 @@
         messageInput.style.height = `${Math.min(messageInput.scrollHeight, 108)}px`;
       });
 
+      function clearPendingImage() {
+        if (pendingImage?.previewUrl) URL.revokeObjectURL(pendingImage.previewUrl);
+        pendingImage = null;
+        imageInput.value = '';
+        imagePreview.hidden = true;
+        imagePreviewThumb.removeAttribute('src');
+        imagePreviewName.textContent = '已选择图片';
+        messageInput.placeholder = '写一句想对 TA 说的话…';
+      }
+
+      function loadBrowserImage(file) {
+        return new Promise((resolve, reject) => {
+          const url = URL.createObjectURL(file);
+          const image = new Image();
+          image.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(image);
+          };
+          image.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error('这张图片无法读取，请换一张试试'));
+          };
+          image.src = url;
+        });
+      }
+
+      function canvasToBlob(canvas, quality) {
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('图片处理失败')), 'image/jpeg', quality);
+        });
+      }
+
+      async function compressImage(file) {
+        if (!file.type.startsWith('image/')) throw new Error('请选择一张图片');
+        if (file.size > 20 * 1024 * 1024) throw new Error('原图不能超过 20 MB');
+
+        const image = await loadBrowserImage(file);
+        const render = async (maxSide, quality) => {
+          const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const context = canvas.getContext('2d');
+          context.fillStyle = '#fff';
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          return canvasToBlob(canvas, quality);
+        };
+
+        let blob = await render(1280, .82);
+        if (blob.size > 1.85 * 1024 * 1024) blob = await render(960, .7);
+        if (blob.size > 2 * 1024 * 1024) throw new Error('图片压缩后仍然太大，请换一张');
+
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('图片读取失败'));
+          reader.readAsDataURL(blob);
+        });
+
+        return {
+          base64: String(dataUrl).split(',')[1],
+          mimeType: 'image/jpeg',
+          previewUrl: URL.createObjectURL(blob),
+          name: file.name || '手机照片'
+        };
+      }
+
+      imagePicker.addEventListener('click', () => imageInput.click());
+      removeImageButton.addEventListener('click', clearPendingImage);
+      imageInput.addEventListener('change', async () => {
+        const file = imageInput.files?.[0];
+        if (!file) return;
+        imagePicker.disabled = true;
+        sendMessageButton.disabled = true;
+        composerStatus.textContent = '正在压缩图片…';
+        try {
+          clearPendingImage();
+          pendingImage = await compressImage(file);
+          imagePreviewThumb.src = pendingImage.previewUrl;
+          imagePreviewName.textContent = pendingImage.name;
+          imagePreview.hidden = false;
+          messageInput.placeholder = '给图片写一句话（可选）';
+          composerStatus.textContent = '图片准备好了，点击发送吧';
+        } catch (error) {
+          clearPendingImage();
+          composerStatus.textContent = error.message;
+        } finally {
+          imagePicker.disabled = false;
+          sendMessageButton.disabled = false;
+        }
+      });
+
       messageForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const content = messageInput.value.trim();
-        if (!content) return;
+        if (!content && !pendingImage) return;
         sendMessageButton.disabled = true;
+        imagePicker.disabled = true;
         composerStatus.textContent = '正在发送…';
         try {
-          await callLoveApi('send', { content });
+          const result = pendingImage
+            ? await callLoveApi('send_image', {
+                caption: content,
+                imageBase64: pendingImage.base64,
+                mimeType: pendingImage.mimeType
+              })
+            : await callLoveApi('send', { content });
           messageInput.value = '';
           messageInput.style.height = 'auto';
+          clearPendingImage();
           await loadMessages(true);
-          composerStatus.textContent = '发送成功，对方可以看到啦 ♥';
+          if (result.notification === 'sent') {
+            composerStatus.textContent = '发送成功，邮件提醒也发出啦 💌';
+          } else if (result.notification === 'failed') {
+            composerStatus.textContent = '留言已保存，但邮件提醒暂时没发出';
+          } else if (result.notification === 'not_configured') {
+            composerStatus.textContent = '留言已保存，邮件提醒还没完成配置';
+          } else {
+            composerStatus.textContent = '发送成功，对方可以看到啦 ♥';
+          }
         } catch (error) {
           if (error.status === 401) return leaveApp('登录已过期，请重新登录');
           composerStatus.textContent = error.message;
         } finally {
           sendMessageButton.disabled = false;
+          imagePicker.disabled = false;
           messageInput.focus();
         }
       });
