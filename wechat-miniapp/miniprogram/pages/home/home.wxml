@@ -8,38 +8,31 @@
   </view>
 
   <view class="home-copy">
-    <view class="eyebrow">OUR FOUR LITTLE THINGS</view>
+    <view class="eyebrow">OUR SIX LITTLE THINGS</view>
     <view class="page-title">今天想玩哪个？</view>
-    <view class="subtitle">四个模块彼此独立，想玩什么就直接点什么。</view>
+    <view class="subtitle">六个独立入口，选一个开始今天的小快乐。</view>
   </view>
 
   <view class="module-grid">
     <button class="module-card love" data-url="/pages/love/love" bindtap="openModule">
-      <text class="module-emoji">💗</text><text class="module-label">小游戏</text><text class="module-title">抓住我的爱</text><text class="module-copy">十秒钟，看看能抓住多少喜欢。</text>
+      <text class="module-emoji">💗</text><text class="module-label">小游戏</text><text class="module-title">抓住我的爱</text><text class="module-copy">十秒钟，看看能抓住多少喜欢。</text><text class="module-arrow">↗</text>
     </button>
     <button class="module-card manual" data-url="/pages/manual/manual" bindtap="openModule">
-      <text class="module-emoji">📖</text><text class="module-label">专属档案</text><text class="module-title">男朋友说明书</text><text class="module-copy">查看功能、缺陷和终身售后。</text>
+      <text class="module-emoji">📖</text><text class="module-label">专属档案</text><text class="module-title">男朋友说明书</text><text class="module-copy">查看功能、缺陷和终身售后。</text><text class="module-arrow">↗</text>
     </button>
     <button class="module-card slot" data-url="/pages/slot/slot" bindtap="openModule">
-      <text class="module-emoji">🎰</text><text class="module-label">今日好运</text><text class="module-title">芊芊的老虎机</text><text class="module-copy">随机赢走奶茶、抱抱和惊喜。</text>
+      <text class="module-emoji">🎰</text><text class="module-label">今日好运</text><text class="module-title">芊芊的老虎机</text><text class="module-copy">随机赢走奶茶、抱抱和惊喜。</text><text class="module-arrow">↗</text>
     </button>
     <button class="module-card draw" data-url="/pages/draw/draw" bindtap="openModule">
-      <text class="module-emoji">🎴</text><text class="module-label">100 支签</text><text class="module-title">情侣今日抽签</text><text class="module-copy">不知道做什么时，把决定交给运气。</text>
+      <text class="module-emoji">🎴</text><text class="module-label">100 支签</text><text class="module-title">情侣今日抽签</text><text class="module-copy">不知道做什么时，把决定交给运气。</text><text class="module-arrow">↗</text>
+    </button>
+    <button class="module-card couple" bindtap="openCouple">
+      <text class="module-emoji">💕</text><text class="module-label">共享日常</text><text class="module-title">我们的小日常</text><text class="module-copy">纪念日、心情和愿望清单。</text><text class="module-arrow">↗</text>
+    </button>
+    <button class="module-card album" bindtap="openAlbum">
+      <text class="module-emoji">📸</text><text class="module-label">珍藏时刻</text><text class="module-title">专属回忆相册</text><text class="module-copy">把喜欢的照片放在一起。</text><text class="module-arrow">↗</text>
     </button>
   </view>
 
-  <view class="extra-grid">
-    <button class="extra-card couple" bindtap="openCouple">
-      <text class="extra-emoji">💕</text>
-      <view><text class="extra-title">我们的小日常</text><text class="extra-copy">纪念日、心情、愿望清单</text></view>
-      <text class="extra-arrow">›</text>
-    </button>
-    <button class="extra-card album" bindtap="openAlbum">
-      <text class="extra-emoji">📸</text>
-      <view><text class="extra-title">专属回忆相册</text><text class="extra-copy">把想珍藏的照片放在一起</text></view>
-      <text class="extra-arrow">›</text>
-    </button>
-  </view>
-
-  <view class="welcome">当前用户：{{displayName}} · 四个模块随时进入</view>
+  <view class="welcome">当前用户：{{displayName}} · 六个模块随时进入</view>
 </view>
