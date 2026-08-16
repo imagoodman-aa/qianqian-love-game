@@ -1,6 +1,5 @@
 const { callLoveApi, handleExpired } = require('../../utils/api');
 const { confirmLogout } = require('../../utils/nav');
-const { requestNewMessageReminder } = require('../../utils/notifications');
 
 const CONTROL_PREFIX = '__QQ_CONTROL__';
 
@@ -73,7 +72,6 @@ Page({
   stopPolling() { clearInterval(this.pollTimer); this.pollTimer = null; },
   back() { wx.navigateBack({ fail: () => wx.reLaunch({ url: '/pages/home/home' }) }); },
   refresh() { this.loadMessages(true); },
-  requestReminder: requestNewMessageReminder,
   logout: confirmLogout,
   onContent(event) { this.setData({ content: event.detail.value }); },
 
@@ -172,19 +170,14 @@ Page({
     this.setData({ sending: true, status: '正在发送…' });
 
     try {
-      let result;
       if (pendingImage) {
         const cloudPath = `love-board-temp/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
         const upload = await wx.cloud.uploadFile({ cloudPath, filePath: pendingImage.path });
-        result = await callLoveApi('send_cloud_image', { caption: content, cloudFileId: upload.fileID });
+        await callLoveApi('send_cloud_image', { caption: content, cloudFileId: upload.fileID, notify: false });
       } else {
-        result = await callLoveApi('send', { content });
+        await callLoveApi('send', { content, notify: false });
       }
-      let status = '发送成功，对方可以看到啦 ♥';
-      if (result.notification === 'sent') status = '发送成功，邮件提醒也发出啦 💌';
-      if (result.notification === 'failed') status = '留言已保存，但邮件提醒暂时没发出';
-      if (result.notification === 'not_configured') status = '留言已保存，邮件提醒还没完成配置';
-      this.setData({ content: '', pendingImage: null, status });
+      this.setData({ content: '', pendingImage: null, status: '发送成功，对方可以看到啦 ♥' });
       await this.loadMessages(true, true);
     } catch (error) {
       if (handleExpired(error)) return;

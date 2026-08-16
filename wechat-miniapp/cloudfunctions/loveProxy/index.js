@@ -86,7 +86,8 @@ async function sendCloudImage(payload, sessionToken) {
     return await apiRequest('send_image', {
       caption: String(payload.caption || '').slice(0, 500),
       imageBase64: buffer.toString('base64'),
-      mimeType
+      mimeType,
+      notify: false
     }, sessionToken);
   } finally {
     try { await cloud.deleteFile({ fileList: [cloudFileId] }); } catch (_) { /* 临时文件会由云端后续清理 */ }
@@ -283,7 +284,7 @@ exports.main = async event => {
       : sharedActions.has(action)
         ? await handleSharedAction(action, payload, sessionToken)
       : ALLOWED_ACTIONS.has(action)
-        ? await apiRequest(action, payload, sessionToken)
+        ? await apiRequest(action, action === 'send' ? { ...payload, notify: false } : payload, sessionToken)
         : (() => { throw { status: 400, message: '不支持的操作' }; })();
     return { ok: true, data };
   } catch (error) {

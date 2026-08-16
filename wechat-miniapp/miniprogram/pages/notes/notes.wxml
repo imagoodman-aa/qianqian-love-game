@@ -2,7 +2,7 @@
   <view class="topbar notes-topbar">
     <view class="topbar-brand" bindtap="back"><text class="topbar-heart">‹</text><text class="topbar-brand-label">返回</text></view>
     <view class="notes-title"><text>JUST FOR US</text><text class="notes-title-main">我们的留言板</text></view>
-    <view class="notes-actions"><button class="topbar-action" bindtap="requestReminder">🔔</button><button class="topbar-action" bindtap="refresh">刷新</button></view>
+    <view class="notes-actions"><button class="topbar-action" bindtap="refresh">刷新</button></view>
   </view>
 
   <scroll-view class="message-list" scroll-y enable-back-to-top scroll-into-view="{{scrollToId}}">

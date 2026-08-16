@@ -1696,26 +1696,19 @@
         imagePicker.disabled = true;
         composerStatus.textContent = '正在发送…';
         try {
-          const result = pendingImage
-            ? await callLoveApi('send_image', {
+          await (pendingImage
+            ? callLoveApi('send_image', {
                 caption: content,
                 imageBase64: pendingImage.base64,
-                mimeType: pendingImage.mimeType
+                mimeType: pendingImage.mimeType,
+                notify: false
               })
-            : await callLoveApi('send', { content });
+            : callLoveApi('send', { content, notify: false }));
           messageInput.value = '';
           messageInput.style.height = 'auto';
           clearPendingImage();
           await loadMessages(true);
-          if (result.notification === 'sent') {
-            composerStatus.textContent = '发送成功，邮件提醒也发出啦 💌';
-          } else if (result.notification === 'failed') {
-            composerStatus.textContent = '留言已保存，但邮件提醒暂时没发出';
-          } else if (result.notification === 'not_configured') {
-            composerStatus.textContent = '留言已保存，邮件提醒还没完成配置';
-          } else {
-            composerStatus.textContent = '发送成功，对方可以看到啦 ♥';
-          }
+          composerStatus.textContent = '发送成功，对方可以看到啦 ♥';
         } catch (error) {
           if (error.status === 401) return leaveApp('登录已过期，请重新登录');
           composerStatus.textContent = error.message;
