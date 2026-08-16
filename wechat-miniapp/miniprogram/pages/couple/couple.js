@@ -62,8 +62,7 @@ Page({
         callLoveApi('couple_read'), callLoveApi('mood_list'), callLoveApi('wish_list'), callLoveApi('draw_list')
       ]);
       const cloudDate = state.anniversaryDate || '';
-      const localDateValue = wx.getStorageSync(ANNIVERSARY_STORAGE_KEY) || '';
-      const anniversaryDate = cloudDate || localDateValue || DEFAULT_ANNIVERSARY_DATE;
+      const anniversaryDate = cloudDate || DEFAULT_ANNIVERSARY_DATE;
       const info = anniversaryInfo(anniversaryDate);
       wx.setStorageSync(ANNIVERSARY_STORAGE_KEY, anniversaryDate);
       // 第一次进入时自动把默认日期补到共享空间，之后两个人看到的是同一个日期。
