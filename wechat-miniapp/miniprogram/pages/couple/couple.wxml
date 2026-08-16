@@ -1,0 +1,53 @@
+<view class="page-shell couple-page">
+  <view class="topbar">
+    <view class="topbar-brand" bindtap="goHome"><text class="topbar-heart">‹</text><text class="topbar-brand-label">返回首页</text></view>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+
+  <view class="eyebrow">JUST FOR US · 共享空间</view>
+  <view class="page-title small">我们的小日常</view>
+  <view class="subtitle">把想记住的日子、今天的心情和想一起完成的事放在这里。</view>
+
+  <view class="card anniversary-card">
+    <view class="section-kicker">💕 我们已经在一起</view>
+    <view class="days-line"><text class="days-number">{{anniversaryDays}}</text><text class="days-unit">天</text></view>
+    <view class="next-anniversary">{{nextAnniversary}}</view>
+    <picker mode="date" value="{{state.anniversaryDate}}" start="2000-01-01" bindchange="onAnniversary">
+      <view class="date-picker">{{state.anniversaryDate ? '修改在一起的日子' : '设置在一起的日子'}} <text>›</text></view>
+    </picker>
+  </view>
+
+  <view class="section-head"><view><text class="section-kicker">😊 今天的心情</text><text class="section-hint">选一个告诉对方</text></view><button class="small-primary" loading="{{saving}}" bindtap="saveMood">保存</button></view>
+  <view class="card mood-card">
+    <view class="mood-options">
+      <view wx:for="{{moodOptions}}" wx:key="emoji" class="mood-option {{todayMood === item.emoji ? 'selected' : ''}}" data-emoji="{{item.emoji}}" bindtap="chooseMood"><text>{{item.emoji}}</text><text>{{item.label}}</text></view>
+    </view>
+    <textarea class="mood-input" maxlength="80" value="{{moodNote}}" auto-height placeholder="给 TA 留一句今天的心情…" bindinput="onMoodNote" />
+    <view class="mood-history" wx:if="{{moods.length}}">
+      <view wx:for="{{moods}}" wx:key="_id" class="mood-history-row"><text>{{item.emoji}} {{item.displayName}}</text><text wx:if="{{item.note}}">{{item.note}}</text></view>
+    </view>
+  </view>
+
+  <view class="section-head"><view><text class="section-kicker">✅ 情侣愿望清单</text><text class="section-hint">一起完成的小目标</text></view><text class="count-label">{{wishes.length}} 件</text></view>
+  <view class="card wish-card">
+    <view class="wish-add"><input value="{{wishTitle}}" maxlength="80" placeholder="例如：一起去看一次日落" bindinput="onWishTitle" bindconfirm="addWish" confirm-type="send" /><button class="small-primary" loading="{{saving}}" bindtap="addWish">添加</button></view>
+    <view wx:if="{{!wishes.length}}" class="section-empty">还没有愿望，先写下一件想和 TA 做的事吧 ✨</view>
+    <view wx:for="{{wishes}}" wx:key="_id" class="wish-row {{item.done ? 'done' : ''}}">
+      <view class="wish-check" data-id="{{item._id}}" data-done="{{item.done}}" bindtap="toggleWish">{{item.done ? '✓' : ''}}</view>
+      <view class="wish-main" data-id="{{item._id}}" data-done="{{item.done}}" bindtap="toggleWish"><text>{{item.title}}</text><text>{{item.done ? '已完成 · ' + item.doneBy : '来自 ' + item.createdByName}}</text></view>
+      <button wx:if="{{item.mine}}" class="delete-mini" data-id="{{item._id}}" bindtap="deleteWish">×</button>
+    </view>
+  </view>
+
+  <view class="section-head"><view><text class="section-kicker">🎴 抽签记录</text><text class="section-hint">收藏喜欢的提议，做完就打勾</text></view><text class="count-label">{{draws.length}} 条</text></view>
+  <view class="card draw-history-card">
+    <view wx:if="{{!draws.length}}" class="section-empty">去情侣今日抽签，抽到的内容会出现在这里 🎴</view>
+    <view wx:for="{{draws}}" wx:key="_id" class="draw-history-row">
+      <text class="draw-history-emoji">{{item.emoji}}</text><view class="draw-history-main"><text>{{item.title}}</text><text>{{item.createdByName}} 抽到 · {{item.category}}</text></view>
+      <view class="draw-history-actions"><text data-id="{{item._id}}" data-field="favorite" data-value="{{item.favorite}}" bindtap="toggleDraw">{{item.favorite ? '♥' : '♡'}}</text><text data-id="{{item._id}}" data-field="done" data-value="{{item.done}}" bindtap="toggleDraw">{{item.done ? '✓' : '○'}}</text><text data-id="{{item._id}}" bindtap="shareDraw">↗</text></view>
+    </view>
+  </view>
+
+  <view class="status-line" wx:if="{{status}}">{{status}}</view>
+  <button class="secondary home-button" bindtap="goHome">← 返回首页</button>
+</view>

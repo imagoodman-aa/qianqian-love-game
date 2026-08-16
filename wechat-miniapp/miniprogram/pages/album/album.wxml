@@ -1,0 +1,32 @@
+<view class="page-shell album-page">
+  <view class="topbar">
+    <view class="topbar-brand" bindtap="goHome"><text class="topbar-heart">‹</text><text class="topbar-brand-label">返回首页</text></view>
+    <button class="topbar-action" bindtap="openNotes">💌 留言</button>
+  </view>
+
+  <view class="eyebrow">JUST FOR US · MEMORY WALL</view>
+  <view class="page-title small">专属回忆相册</view>
+  <view class="subtitle">只放你们想珍藏的照片。点开可以看原图，长按自己的照片可以移除。</view>
+
+  <view class="card album-upload-card">
+    <view wx:if="{{pendingImage}}" class="pending-photo">
+      <image src="{{pendingImage.path}}" mode="aspectFill" />
+      <view class="pending-info"><text>照片已选好 📸</text><input value="{{caption}}" maxlength="120" placeholder="写一句照片说明（可选）" bindinput="onCaption" /></view>
+      <button class="remove-pending" bindtap="removePending">×</button>
+    </view>
+    <view wx:else class="upload-empty" bindtap="chooseImage"><text>＋</text><text>添加一张照片</text><text>支持手机相册或相机</text></view>
+    <button wx:if="{{pendingImage}}" class="primary album-save" loading="{{uploading}}" disabled="{{uploading}}" bindtap="uploadPhoto">保存到回忆相册</button>
+  </view>
+
+  <view class="album-head"><text>我们的照片</text><text>{{photos.length}} 张</text></view>
+  <view wx:if="{{loading}}" class="album-empty">正在打开回忆相册…</view>
+  <view wx:elif="{{!photos.length}}" class="card album-empty">还没有照片，先放入第一张属于你们的回忆吧 💗</view>
+  <view wx:else class="photo-grid">
+      <view wx:for="{{photos}}" wx:key="_id" class="photo-card">
+      <image class="photo-image" src="{{item.imageUrl}}" mode="aspectFill" data-url="{{item.imageUrl}}" bindtap="preview" />
+      <view class="photo-caption"><text wx:if="{{item.caption}}">{{item.caption}}</text><text wx:else>没有写说明 · {{item.createdByName}}</text><text class="photo-remove" wx:if="{{item.mine}}" data-id="{{item._id}}" bindtap="removePhoto">×</text></view>
+    </view>
+  </view>
+  <view class="album-status" wx:if="{{status}}">{{status}}</view>
+  <button class="secondary home-button" bindtap="goHome">← 返回首页</button>
+</view>

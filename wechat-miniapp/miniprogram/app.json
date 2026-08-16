@@ -2,6 +2,8 @@
   "pages": [
     "pages/login/login",
     "pages/home/home",
+    "pages/couple/couple",
+    "pages/album/album",
     "pages/love/love",
     "pages/manual/manual",
     "pages/slot/slot",

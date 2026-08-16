@@ -1,0 +1,45 @@
+.couple-page { padding-bottom: calc(55rpx + env(safe-area-inset-bottom)); }
+.anniversary-card { padding: 28rpx 28rpx 20rpx; background: linear-gradient(145deg, #fff, #fff0f4); }
+.section-kicker { display: block; color: #e84f71; font-size: 23rpx; font-weight: 850; }
+.section-hint { display: block; margin-top: 5rpx; color: #a2878e; font-size: 19rpx; }
+.days-line { margin-top: 10rpx; display: flex; align-items: baseline; color: #33252b; }
+.days-number { font-size: 86rpx; font-weight: 900; letter-spacing: -.07em; }
+.days-unit { margin-left: 10rpx; color: #8c6b74; font-size: 25rpx; }
+.next-anniversary { margin-top: -4rpx; color: #896d75; font-size: 22rpx; }
+.date-picker { margin-top: 23rpx; padding-top: 18rpx; display: flex; justify-content: space-between; border-top: 1rpx solid rgba(232,79,113,.12); color: #c9365a; font-size: 21rpx; }
+.date-picker text { font-size: 32rpx; line-height: 18rpx; }
+.section-head { margin: 28rpx 2rpx 12rpx; display: flex; align-items: center; justify-content: space-between; }
+.small-primary { min-width: 98rpx; min-height: 54rpx; margin: 0; padding: 0 17rpx; border-radius: 17rpx; color: #fff; background: #e84f71; font-size: 21rpx; line-height: 54rpx; }
+.small-primary[disabled] { opacity: .55; }
+.count-label { color: #a48991; font-size: 20rpx; }
+.mood-card, .wish-card, .draw-history-card { padding: 20rpx; }
+.mood-options { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8rpx; }
+.mood-option { min-height: 93rpx; padding: 8rpx 2rpx; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5rpx; border: 1rpx solid transparent; border-radius: 17rpx; color: #876f76; font-size: 17rpx; }
+.mood-option text:first-child { font-size: 36rpx; line-height: 1; }
+.mood-option.selected { border-color: #f2a7b8; background: #fff0f4; color: #c9365a; }
+.mood-input { width: 100%; min-height: 68rpx; margin-top: 15rpx; padding: 16rpx 17rpx; box-sizing: border-box; border: 1rpx solid #f0d9df; border-radius: 16rpx; background: #fffaf9; font-size: 23rpx; }
+.mood-history { margin-top: 14rpx; padding-top: 12rpx; border-top: 1rpx solid #f4e4e7; }
+.mood-history-row { display: flex; justify-content: space-between; gap: 12rpx; padding: 7rpx 0; color: #7f666e; font-size: 19rpx; }
+.mood-history-row text:last-child { flex: 1; overflow: hidden; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+.wish-add { display: flex; gap: 10rpx; }
+.wish-add input { flex: 1; min-width: 0; height: 58rpx; padding: 0 17rpx; box-sizing: border-box; border: 1rpx solid #f0d9df; border-radius: 16rpx; background: #fffaf9; font-size: 22rpx; }
+.wish-add .small-primary { min-width: 83rpx; }
+.wish-row { min-height: 70rpx; margin-top: 13rpx; display: flex; align-items: center; gap: 12rpx; }
+.wish-check { width: 38rpx; height: 38rpx; flex: none; box-sizing: border-box; border: 2rpx solid #e8a0b1; border-radius: 50%; color: #fff; background: #fff; font-size: 25rpx; line-height: 34rpx; text-align: center; }
+.wish-row.done .wish-check { border-color: #e84f71; background: #e84f71; }
+.wish-main { flex: 1; min-width: 0; }
+.wish-main text { display: block; color: #49393e; font-size: 23rpx; line-height: 1.35; }
+.wish-main text:last-child { margin-top: 4rpx; color: #aa9299; font-size: 17rpx; }
+.wish-row.done .wish-main text:first-child { color: #a68e95; text-decoration: line-through; }
+.delete-mini { width: 42rpx; min-height: 42rpx; margin: 0; padding: 0; color: #b9939d; background: transparent; font-size: 28rpx; line-height: 42rpx; }
+.section-empty { padding: 27rpx 8rpx 11rpx; color: #a0878e; font-size: 21rpx; text-align: center; }
+.draw-history-row { min-height: 78rpx; padding: 11rpx 0; display: flex; align-items: center; gap: 12rpx; border-bottom: 1rpx solid #f5e7e9; }
+.draw-history-row:last-child { border-bottom: 0; }
+.draw-history-emoji { flex: none; font-size: 32rpx; }
+.draw-history-main { flex: 1; min-width: 0; }
+.draw-history-main text { display: block; overflow: hidden; color: #49393e; font-size: 21rpx; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.draw-history-main text:last-child { margin-top: 4rpx; color: #aa9299; font-size: 17rpx; }
+.draw-history-actions { flex: none; display: flex; gap: 13rpx; color: #d34d6d; font-size: 29rpx; }
+.draw-history-actions text:last-child { color: #aa9299; font-size: 25rpx; }
+.status-line { min-height: 28rpx; margin: 15rpx 4rpx 0; color: #9f858d; font-size: 18rpx; text-align: center; }
+.home-button { margin-top: 22rpx; }

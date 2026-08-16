@@ -1,5 +1,6 @@
 const activities = require('../../utils/activities');
-const { goHome, openNotes } = require('../../utils/nav');
+const { callLoveApi, handleExpired } = require('../../utils/api');
+const { goHome, openNotes, openCouple } = require('../../utils/nav');
 
 const BAG_KEY = 'qianqian_activity_bag_v1';
 const LAST_KEY = 'qianqian_last_activity_v1';
@@ -34,6 +35,7 @@ Page({
   },
   goHome,
   openNotes,
+  openCouple,
 
   draw() {
     if (this.data.drawing) return;
@@ -51,6 +53,10 @@ Page({
         copy: '这是一份小提议。如果两个人今天都不想做，就再抽一支。',
         counter: this.bag.length ? `本轮还有 ${this.bag.length} 支不重复的签` : '100 支签已经抽完，下次会重新洗牌',
         buttonText: '再抽一支', drawing: false, toast: `${emoji} 今天就做这个吧`
+      });
+      callLoveApi('draw_save', { activityIndex, category, emoji, title }).catch(error => {
+        if (handleExpired(error)) return;
+        this.setData({ toast: '已抽到啦，记录稍后再同步 💕' });
       });
       setTimeout(() => this.setData({ toast: '' }), 1500);
     }, 700);

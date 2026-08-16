@@ -2,20 +2,23 @@
   <view class="topbar notes-topbar">
     <view class="topbar-brand" bindtap="back"><text class="topbar-heart">‹</text><text class="topbar-brand-label">返回</text></view>
     <view class="notes-title"><text>JUST FOR US</text><text class="notes-title-main">我们的留言板</text></view>
-    <button class="topbar-action" bindtap="refresh">刷新</button>
+    <view class="notes-actions"><button class="topbar-action" bindtap="requestReminder">🔔</button><button class="topbar-action" bindtap="refresh">刷新</button></view>
   </view>
 
   <scroll-view class="message-list" scroll-y enable-back-to-top scroll-into-view="{{scrollToId}}">
     <view wx:if="{{loading}}" class="empty">正在加载我们的悄悄话…</view>
     <view wx:elif="{{!messages.length}}" class="empty">还没有留言。\n先写下第一句悄悄话吧 💌</view>
+    <view wx:if="{{hasMore}}" class="older-button" bindtap="showOlder">查看更早的留言</view>
     <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}" class="message-row {{item.mine ? 'mine' : ''}}">
       <text class="author">{{item.mine ? '我' : item.displayName}}</text>
       <view class="bubble {{item.type === 'image' ? 'image-bubble' : ''}}">
         <image wx:if="{{item.type === 'image' && item.imageUrl}}" class="message-image" src="{{item.imageUrl}}" mode="widthFix" data-url="{{item.imageUrl}}" bindtap="previewMessageImage" />
+        <text wx:if="{{item.type === 'image' && !item.imageUrl}}" class="image-missing">图片暂时加载失败</text>
         <text wx:if="{{item.type === 'image' && item.content && item.content !== '图片'}}" class="caption">{{item.content}}</text>
         <text wx:if="{{item.type !== 'image'}}">{{item.content}}</text>
       </view>
-      <view class="meta"><text>{{item.displayTime}}</text><text wx:if="{{item.mine}}" class="read-state">{{item.readAt ? '已读' : '已送达'}}</text></view>
+      <view wx:if="{{item.reactions.length}}" class="reactions"><text wx:for="{{item.reactions}}" wx:key="key">{{item.emoji}}</text></view>
+      <view class="meta"><text>{{item.displayTime}}</text><text wx:if="{{item.mine}}" class="read-state">{{item.readAt ? '已读' : '已送达'}}</text><text class="message-more" data-id="{{item.id}}" bindtap="messageActions">···</text></view>
     </view>
     <view id="message-bottom" class="bottom-anchor"></view>
   </scroll-view>
@@ -28,7 +31,7 @@
     </view>
     <view class="composer-row">
       <view class="image-button {{sending ? 'is-disabled' : ''}}" bindtap="chooseImage">📷</view>
-      <textarea class="message-input" value="{{content}}" maxlength="500" auto-height fixed placeholder="{{pendingImage ? '给图片写一句话（可选）' : '写一句想对 TA 说的话…'}}" confirm-type="send" confirm-hold bindinput="onContent" bindconfirm="send" />
+      <textarea class="message-input" value="{{content}}" maxlength="500" auto-height fixed focus="{{inputFocus}}" placeholder="{{pendingImage ? '给图片写一句话（可选）' : '写一句想对 TA 说的话…'}}" confirm-type="send" confirm-hold bindinput="onContent" bindconfirm="send" />
       <view class="send-button {{sending ? 'is-disabled' : ''}}" bindtap="send">↑</view>
     </view>
     <view class="status">{{status}}</view>

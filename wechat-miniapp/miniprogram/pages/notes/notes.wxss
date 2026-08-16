@@ -1,10 +1,12 @@
 .notes-page { height: 100vh; display: flex; flex-direction: column; background: #fff8f5; overflow: hidden; }
 .notes-topbar { position: relative; flex: none; }
+.notes-actions { flex: none; display: flex; align-items: center; gap: 6rpx; }
 .notes-title { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; white-space: nowrap; }
 .notes-title text { color: #e84f71; font-size: 15rpx; font-weight: 850; letter-spacing: .12em; }
 .notes-title-main { margin-top: 2rpx; font-size: 25rpx; font-weight: 850; }
 .message-list { flex: 1; height: 0; box-sizing: border-box; padding: 25rpx 28rpx; }
 .empty { padding: 120rpx 30rpx; color: #9b8189; font-size: 25rpx; line-height: 1.8; text-align: center; white-space: pre-line; }
+.older-button { display: table; margin: 0 auto 20rpx; padding: 10rpx 18rpx; border-radius: 999rpx; color: #c9365a; background: #fff0f4; font-size: 19rpx; }
 .message-row { margin: 0 0 24rpx; display: flex; flex-direction: column; align-items: flex-start; }
 .message-row.mine { align-items: flex-end; }
 .author { margin: 0 13rpx 7rpx; color: #9a8188; font-size: 18rpx; }
@@ -12,9 +14,12 @@
 .mine .bubble { color: #fff; background: linear-gradient(135deg, #e84f71, #f27d97); border-radius: 25rpx 8rpx 25rpx 25rpx; }
 .image-bubble { width: 470rpx; padding: 7rpx; overflow: hidden; }
 .message-image { display: block; width: 100%; height: auto; border-radius: 19rpx; }
+.image-missing { display: block; padding: 33rpx 18rpx; color: #a3848d; font-size: 20rpx; text-align: center; }
 .caption { display: block; padding: 14rpx 13rpx 11rpx; }
+.reactions { display: flex; gap: 6rpx; margin: -7rpx 13rpx 0; padding: 4rpx 9rpx; border-radius: 999rpx; background: #fff; box-shadow: 0 5rpx 14rpx rgba(100,58,70,.08); font-size: 21rpx; }
 .meta { margin: 7rpx 13rpx 0; display: flex; gap: 12rpx; color: #aa9299; font-size: 17rpx; }
 .read-state { color: #d34d6d; font-weight: 750; }
+.message-more { margin-left: 2rpx; color: #b2969e; font-size: 21rpx; letter-spacing: 2rpx; }
 .bottom-anchor { height: 35rpx; }
 .composer { flex: none; padding: 14rpx 22rpx calc(14rpx + env(safe-area-inset-bottom)); border-top: 1rpx solid #f0dbe0; background: rgba(255,255,255,.96); }
 .composer-row { display: flex; align-items: flex-end; gap: 10rpx; }

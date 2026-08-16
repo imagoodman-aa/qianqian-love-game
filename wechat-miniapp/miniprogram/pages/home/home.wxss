@@ -10,4 +10,13 @@
 .module-label { color: #e84f71; font-size: 18rpx; font-weight: 850; letter-spacing: .12em; }
 .module-title { margin-top: 8rpx; font-size: 30rpx; font-weight: 850; line-height: 1.25; }
 .module-copy { margin-top: 11rpx; color: #876f76; font-size: 20rpx; line-height: 1.5; }
+.extra-grid { display: grid; gap: 14rpx; margin-top: 18rpx; }
+.extra-card { min-height: 102rpx; margin: 0; padding: 18rpx 20rpx; display: flex; align-items: center; gap: 16rpx; border: 1rpx solid rgba(232,79,113,.12); border-radius: 25rpx; text-align: left; box-shadow: 0 12rpx 28rpx rgba(95,55,65,.05); }
+.extra-card.couple { background: linear-gradient(105deg, #fff, #fff0f4); }
+.extra-card.album { background: linear-gradient(105deg, #fff, #f1f3ff); }
+.extra-emoji { flex: none; font-size: 42rpx; line-height: 1; }
+.extra-card view { flex: 1; min-width: 0; }
+.extra-title { display: block; color: #33252b; font-size: 27rpx; font-weight: 850; }
+.extra-copy { display: block; margin-top: 5rpx; color: #927780; font-size: 19rpx; }
+.extra-arrow { flex: none; color: #e84f71; font-size: 38rpx; font-weight: 300; }
 .welcome { margin-top: 31rpx; color: #a88d95; font-size: 21rpx; text-align: center; }

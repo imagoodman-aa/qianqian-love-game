@@ -28,5 +28,18 @@
     </button>
   </view>
 
+  <view class="extra-grid">
+    <button class="extra-card couple" bindtap="openCouple">
+      <text class="extra-emoji">💕</text>
+      <view><text class="extra-title">我们的小日常</text><text class="extra-copy">纪念日、心情、愿望清单</text></view>
+      <text class="extra-arrow">›</text>
+    </button>
+    <button class="extra-card album" bindtap="openAlbum">
+      <text class="extra-emoji">📸</text>
+      <view><text class="extra-title">专属回忆相册</text><text class="extra-copy">把想珍藏的照片放在一起</text></view>
+      <text class="extra-arrow">›</text>
+    </button>
+  </view>
+
   <view class="welcome">当前用户：{{displayName}} · 四个模块随时进入</view>
 </view>

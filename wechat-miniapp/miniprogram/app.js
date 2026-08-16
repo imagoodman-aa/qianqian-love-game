@@ -1,7 +1,10 @@
 App({
   globalData: {
     sessionToken: '',
-    user: null
+    user: null,
+    draftMessage: '',
+    // 在微信公众平台创建订阅消息模板后，把模板 ID 放到这里即可开启微信提醒。
+    subscribeTemplateIds: []
   },
 
   onLaunch() {

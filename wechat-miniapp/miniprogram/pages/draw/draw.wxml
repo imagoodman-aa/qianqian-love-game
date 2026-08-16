@@ -18,6 +18,7 @@
     <text class="draw-counter">{{counter}}</text>
   </view>
   <view class="two-actions"><button class="secondary" bindtap="goHome">← 返回首页</button><button class="primary" disabled="{{drawing}}" bindtap="draw">换一个看看</button></view>
+  <button class="history-link" bindtap="openCouple">查看抽签记录 · 收藏和完成</button>
   <view class="footer-note">抽到的不是命令，是今天相爱的一个小提议</view>
   <view wx:if="{{toast}}" class="toast">{{toast}}</view>
 </view>

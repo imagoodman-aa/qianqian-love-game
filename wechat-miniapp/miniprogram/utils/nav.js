@@ -8,6 +8,14 @@ function openNotes() {
   wx.navigateTo({ url: '/pages/notes/notes' });
 }
 
+function openCouple() {
+  wx.navigateTo({ url: '/pages/couple/couple' });
+}
+
+function openAlbum() {
+  wx.navigateTo({ url: '/pages/album/album' });
+}
+
 function confirmLogout() {
   wx.showModal({
     title: '退出登录',
@@ -23,4 +31,4 @@ function confirmLogout() {
   });
 }
 
-module.exports = { goHome, openNotes, confirmLogout };
+module.exports = { goHome, openNotes, openCouple, openAlbum, confirmLogout };

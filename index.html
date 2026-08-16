@@ -834,6 +834,7 @@
     .message-image { display: block; width: 100%; max-height: 360px; border-radius: 15px; object-fit: cover; }
     .image-caption { display: block; padding: 7px 9px 8px; white-space: pre-wrap; word-break: break-word; }
     .message-meta { display: flex; align-items: center; gap: 6px; margin: 5px 8px 0; color: #b0959b; font-size: 8px; }
+    .message-reactions { margin: -2px 8px 0; padding: 3px 7px; border-radius: 999px; color: #d34d6d; background: #fff; font-size: 12px; box-shadow: 0 3px 8px rgba(100,58,70,.08); }
     .message-read { color: #d05a78; font-weight: 750; }
 
     .message-composer {
@@ -1154,6 +1155,7 @@
       const scoreEl = document.querySelector('#score');
       const toast = document.querySelector('#toast');
       const LOVE_API = 'https://hctlyoavylhaebqpukbn.supabase.co/functions/v1/love-board';
+      const CONTROL_PREFIX = '__QQ_CONTROL__';
       const SESSION_KEY = 'qianqian_love_session_v1';
       const authScreen = document.querySelector('#auth-screen');
       const authForm = document.querySelector('#auth-form');
@@ -1419,6 +1421,27 @@
       }
 
       function renderMessages(messages) {
+        const recalled = new Set();
+        const reactions = {};
+        messages.forEach(message => {
+          const value = String(message.content || '');
+          if (!value.startsWith(CONTROL_PREFIX)) return;
+          try {
+            const control = JSON.parse(value.slice(CONTROL_PREFIX.length));
+            if (!control.targetId) return;
+            if (control.type === 'recall') recalled.add(String(control.targetId));
+            if (control.type === 'reaction' && control.emoji) {
+              const target = String(control.targetId);
+              reactions[target] = reactions[target] || [];
+              if (!reactions[target].some(item => item.emoji === control.emoji && item.username === message.username)) {
+                reactions[target].push({ emoji: control.emoji, username: message.username });
+              }
+            }
+          } catch (_) { /* 普通留言不受控制消息影响 */ }
+        });
+        messages = messages
+          .filter(message => !String(message.content || '').startsWith(CONTROL_PREFIX) && !recalled.has(String(message.id)))
+          .map(message => ({ ...message, reactions: reactions[String(message.id)] || [] }));
         const wasNearBottom = messageList.scrollHeight - messageList.scrollTop - messageList.clientHeight < 90;
         messageList.replaceChildren();
 
@@ -1482,6 +1505,12 @@
             meta.appendChild(readState);
           }
           row.append(author, bubble, meta);
+          if (message.reactions?.length) {
+            const reaction = document.createElement('span');
+            reaction.className = 'message-reactions';
+            reaction.textContent = message.reactions.map(item => item.emoji).join(' ');
+            row.appendChild(reaction);
+          }
           messageList.appendChild(row);
         });
 
@@ -1523,7 +1552,7 @@
         try {
           const data = await callLoveApi('list');
           const lastSeen = Number(localStorage.getItem(seenKey()) || 0);
-          const hasUnread = data.messages.some(message => !message.mine && Number(message.id) > lastSeen);
+          const hasUnread = data.messages.some(message => !message.mine && !String(message.content || '').startsWith(CONTROL_PREFIX) && Number(message.id) > lastSeen);
           unreadDot.classList.toggle('hidden', !hasUnread);
         } catch (error) {
           if (error.status === 401) leaveApp('登录已过期，请重新登录');

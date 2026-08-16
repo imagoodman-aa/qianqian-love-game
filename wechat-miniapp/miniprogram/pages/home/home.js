@@ -1,5 +1,5 @@
 const { callLoveApi, handleExpired } = require('../../utils/api');
-const { openNotes, confirmLogout } = require('../../utils/nav');
+const { openNotes, openCouple, openAlbum, confirmLogout } = require('../../utils/nav');
 
 Page({
   data: { displayName: '', hasUnread: false },
@@ -18,6 +18,8 @@ Page({
 
   openModule(event) { wx.navigateTo({ url: event.currentTarget.dataset.url }); },
   openNotes,
+  openCouple,
+  openAlbum,
   logout: confirmLogout,
 
   async checkUnread() {
@@ -26,7 +28,7 @@ Page({
       const user = getApp().globalData.user || {};
       const seenKey = `qianqian_love_seen_${user.username || 'guest'}`;
       const lastSeen = Number(wx.getStorageSync(seenKey) || 0);
-      const hasUnread = (data.messages || []).some(message => !message.mine && Number(message.id) > lastSeen);
+      const hasUnread = (data.messages || []).some(message => !message.mine && !String(message.content || '').startsWith('__QQ_CONTROL__') && Number(message.id) > lastSeen);
       this.setData({ hasUnread });
     } catch (error) {
       handleExpired(error);

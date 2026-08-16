@@ -1,0 +1,24 @@
+.album-page { padding-bottom: calc(55rpx + env(safe-area-inset-bottom)); }
+.album-upload-card { padding: 12rpx; }
+.upload-empty { min-height: 185rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2rpx dashed #f1b9c5; border-radius: 23rpx; color: #a98791; font-size: 21rpx; }
+.upload-empty text:first-child { color: #e84f71; font-size: 60rpx; font-weight: 200; line-height: 1; }
+.upload-empty text:nth-child(2) { margin-top: 11rpx; color: #8d6e77; font-weight: 750; }
+.upload-empty text:last-child { margin-top: 7rpx; color: #b49da3; font-size: 18rpx; }
+.pending-photo { min-height: 172rpx; display: flex; align-items: center; gap: 14rpx; }
+.pending-photo image { width: 172rpx; height: 172rpx; flex: none; border-radius: 18rpx; background: #f5e8eb; }
+.pending-info { flex: 1; min-width: 0; }
+.pending-info text { display: block; color: #4a363d; font-size: 23rpx; font-weight: 750; }
+.pending-info input { width: 100%; margin-top: 17rpx; padding: 13rpx 12rpx; box-sizing: border-box; border: 1rpx solid #f0d9df; border-radius: 13rpx; background: #fffaf9; font-size: 20rpx; }
+.remove-pending { width: 48rpx; min-height: 48rpx; flex: none; margin: 0; padding: 0; color: #b8929c; background: transparent; font-size: 30rpx; line-height: 48rpx; }
+.album-save { margin-top: 12rpx; min-height: 72rpx; }
+.album-head { margin: 29rpx 3rpx 12rpx; display: flex; justify-content: space-between; color: #4a363d; font-size: 23rpx; font-weight: 800; }
+.album-head text:last-child { color: #a48890; font-size: 19rpx; font-weight: 500; }
+.photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14rpx; }
+.photo-card { overflow: hidden; border: 1rpx solid rgba(232,79,113,.1); border-radius: 22rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(95,55,65,.06); }
+.photo-image { display: block; width: 100%; height: 270rpx; background: #f5e8eb; }
+.photo-caption { min-height: 55rpx; padding: 10rpx 12rpx; box-sizing: border-box; display: flex; align-items: center; gap: 7rpx; color: #806771; font-size: 18rpx; line-height: 1.35; }
+.photo-caption text:first-child { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.photo-remove { flex: none; color: #b8929c; font-size: 25rpx; }
+.album-empty { padding: 64rpx 25rpx; color: #a0878e; font-size: 21rpx; text-align: center; }
+.album-status { min-height: 28rpx; margin-top: 14rpx; color: #9f858d; font-size: 18rpx; text-align: center; }
+.home-button { margin-top: 22rpx; }

@@ -12,3 +12,4 @@
 .draw-button { width: 100%; margin-top: 25rpx; }
 .draw-counter { margin-top: 17rpx; color: #9d859e; font-size: 20rpx; }
 @keyframes shake { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+.history-link { min-height: 60rpx; margin: 17rpx auto 0; padding: 0 22rpx; color: #c9365a; background: transparent; font-size: 20rpx; line-height: 60rpx; }
